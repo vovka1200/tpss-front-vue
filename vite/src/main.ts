@@ -5,9 +5,11 @@ import VueNativeSock from 'vue-native-websocket-vue3';
 import router from "./router";
 import {Quasar, Notify} from 'quasar'
 import 'quasar/src/css/index.sass'
-import '@quasar/extras/material-icons/material-icons.css'
 import langRu from 'quasar/lang/ru'
-import iconSet from 'quasar/icon-set/material-icons.js'
+import  'quasar/icon-set/material-icons.js'
+import '@quasar/extras/material-icons/material-icons.css'
+import  'quasar/icon-set/material-icons-outlined.js'
+import '@quasar/extras/material-icons-outlined/material-icons-outlined.css'
 import '@quasar/extras/fontawesome-v6/fontawesome-v6.css'
 import './assets/main.css'
 
@@ -24,7 +26,6 @@ app.use(VueNativeSock,
     })
 app.use(Quasar, {
     lang: langRu,
-    iconSet: iconSet,
     plugins: {
         Notify
     },
