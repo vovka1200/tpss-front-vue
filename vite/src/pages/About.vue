@@ -14,6 +14,7 @@ const version = computed(() => {
     <p>Система управления заданиями по производству, продажи и сопровождения</p>
     <q-separator class="q-my-md"/>
     <ul>
+      <li>Версия GUI:&nbsp;1.0.0</li>
       <li>Версия API:&nbsp;{{ version }}</li>
     </ul>
   </q-page>
