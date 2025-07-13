@@ -9,7 +9,7 @@ const visible = computed(() => {
 
 const username = computed({
   get() {
-    return store.state.access.username;
+    return store.state.access.account.username;
   },
   set(value) {
     store.commit('SET_USERNAME', value)
@@ -18,7 +18,7 @@ const username = computed({
 
 const password = computed({
   get() {
-    return store.state.access.password;
+    return store.state.access.account.password;
   },
   set(value) {
     store.commit('SET_PASSWORD', value)

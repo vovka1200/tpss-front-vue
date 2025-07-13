@@ -1,19 +1,21 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
+import About from './pages/About.vue'
+import Account from "./pages/Account.vue";
 
 export default createRouter({
     history: createWebHistory(),
     routes: [
         {
             path: '/',
-            component: () => import('./pages/Home.vue'),
+            redirect: '/about',
         },
         {
             path: '/about',
-            component: () => import('./pages/About.vue'),
+            component: About,
         },
         {
-            path: '/contact',
-            component: () => import('./pages/Contacts.vue'),
+            path: '/account',
+            component: Account,
         },
     ],
 })

@@ -10,8 +10,8 @@ export const login = function (context: ActionContext<State, State>) {
             id: 1,
             method: "login",
             params: {
-                "username": context.state.access.username,
-                "password": context.state.access.password,
+                "username": context.state.access.account.username,
+                "password": context.state.access.account.password,
             }
         };
         app.config.globalProperties.$socket.sendObj(jsonRPCRequest);

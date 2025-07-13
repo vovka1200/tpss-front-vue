@@ -21,8 +21,8 @@ app.use(VueNativeSock,
         store: store,
         format: 'json',
         reconnection: true,
-        reconnectionAttempts: 5,
-        reconnectionDelay: 3000,
+        reconnectionAttempts: 12,
+        reconnectionDelay: 5000,
     })
 app.use(Quasar, {
     lang: langRu,
@@ -31,8 +31,8 @@ app.use(Quasar, {
     },
     config: {
         brand: {
-            primary: '#caf6d7',
-            secondary: '#bccebc',
+            primary: '#f6fff6',
+            secondary: '#ecf3ec',
             accent: '#1f82c0',
             dark: '#05250e',
             'dark-page': '#211e1e',

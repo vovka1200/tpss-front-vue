@@ -13,8 +13,11 @@ export interface State {
     authDialogVisible: boolean
     apiVersion: string
     access: {
-        username: string
-        password: string
+        account: {
+            username: string
+            password: string
+            name: string
+        }
     }
 }
 
@@ -31,7 +34,11 @@ export const defaultState: State = {
     authDialogVisible: false,
     apiVersion: '-',
     access: {
-        username: '',
-        password: '',
-    }
+        account: {
+            name: '',
+            username: '',
+            password: '',
+        }
+    },
+
 }

@@ -25,24 +25,44 @@ export const SOCKET_ONOPEN = (state: State, event: Event) => {
 };
 
 export const SOCKET_ONCLOSE = (state: State, event: Event) => {
+    if (state.socket.isConnected) {
+        Notify.create({
+            icon: 'info',
+            color: 'warning',
+            message: 'API: соединение закрыто',
+        });
+    }
     state.socket.isConnected = false;
-    // Stop the heartbeat message when the connection is closed
     clearInterval(state.socket.heartBeatTimer);
     state.socket.heartBeatTimer = 0;
-    console.log("The line is disconnected: " + new Date());
-    console.log(event);
 };
 
 export const SOCKET_ONERROR = (state: State, event: Event) => {
     console.error(state, event);
+    Notify.create({
+        icon: 'error',
+        color: 'negative',
+        message: 'Ошибка подключения',
+    });
 };
 
 export const SOCKET_RECONNECT = (state: State, count: number) => {
     console.info("Message system reconnecting...", state, count);
+    Notify.create({
+        icon: 'restart_alt',
+        color: 'warning',
+        message: `Попытка переподключения ${count}`,
+    });
 };
 
 export const SOCKET_RECONNECT_ERROR = (state: State) => {
     state.socket.reconnectError = true;
+    Notify.create({
+        icon: 'close',
+        color: 'negative',
+        message: `Сервер недоступен`,
+        timeout: 0,
+    });
 };
 
 export const SET_AUTH_DIALOG_VISIBLE = (state: State, visible: boolean) => {
@@ -50,27 +70,47 @@ export const SET_AUTH_DIALOG_VISIBLE = (state: State, visible: boolean) => {
 };
 
 export const SET_USERNAME = (state: State, value: string) => {
-    state.access.username = value;
+    state.access.account.username = value;
 };
 
 export const SET_PASSWORD = (state: State, value: string) => {
-    state.access.password = value;
+    state.access.account.password = value;
+};
+
+export const SET_ACCOUNT_NAME = (state: State, value: string) => {
+    state.access.account.name = value;
 };
 
 export const SOCKET_ONMESSAGE = (state: State, message: JSONRPCResponse) => {
     console.log(message);
     state.socket.message = message;
-    if (message.error?.code === 401) {
-        if (state.authDialogVisible === false) {
+    if (message.error) {
+        if (message.error.code === 401) {
+            if (state.authDialogVisible === false) {
+                Notify.create({
+                    icon: 'block',
+                    color: 'negative',
+                    message: 'Access denied!',
+                });
+            }
+            state.authDialogVisible = true;
+        } else {
             Notify.create({
-                icon: 'info',
+                icon: 'error',
                 color: 'negative',
-                message: 'Access denied!',
+                message: `Ошибка ${message.error.code}`,
+                caption: message.error.message,
             });
         }
-        state.authDialogVisible = true;
+        return;
     }
+
     if (message.result?.version) {
-        state.apiVersion = message.result?.version
+        state.apiVersion = message.result?.version;
+    }
+
+    if (message.result?.account) {
+        state.access.account.username = message.result?.account.username;
+        state.access.account.name = message.result?.account.name;
     }
 };

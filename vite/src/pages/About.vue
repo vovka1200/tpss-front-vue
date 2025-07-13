@@ -9,16 +9,14 @@ const version = computed(() => {
 </script>
 
 <template>
-  <q-page-container class="text-dark">
-    <q-page>
-      <h5>Task Tracker for Production, Sale and Support</h5>
-      <p>Система управления заданиями по производству, продажи и сопровождения</p>
-      <q-separator class="q-my-md"/>
-      <ul>
-        <li>Версия API:&nbsp;{{ version }}</li>
-      </ul>
-    </q-page>
-  </q-page-container>
+  <q-page padding class="text-black">
+    <h5>Task Tracker for Production, Sale and Support</h5>
+    <p>Система управления заданиями по производству, продажи и сопровождения</p>
+    <q-separator class="q-my-md"/>
+    <ul>
+      <li>Версия API:&nbsp;{{ version }}</li>
+    </ul>
+  </q-page>
 </template>
 
 <style scoped>
