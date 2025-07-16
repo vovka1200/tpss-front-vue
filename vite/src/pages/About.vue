@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import {useStore} from "../store";
-import {computed} from "vue";
+import {computed, onMounted} from "vue";
 
 const store = useStore();
 const version = computed(() => {
   return store.state.apiVersion;
 })
+
+onMounted(() => {
+  store.commit('SET_PANEL_TITLE', 'О программе');
+})
 </script>
 
 <template>
   <q-page padding class="text-black">
-    <h5>Task Tracker for Production, Sale and Support</h5>
+    <div class="text-subtitle1">Task Tracker for Production, Sale and Support</div>
     <p>Система управления заданиями по производству, продажи и сопровождения</p>
     <q-card>
       <q-card-section>
