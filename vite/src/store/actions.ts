@@ -8,7 +8,7 @@ export const login = function (context: ActionContext<State, State>) {
         let jsonRPCRequest: JSONRPCRequest = {
             jsonrpc: JSONRPC,
             id: 1,
-            method: "login",
+            method: "access.login",
             params: {
                 "username": context.state.access.account.username,
                 "password": context.state.access.account.password,
@@ -19,6 +19,20 @@ export const login = function (context: ActionContext<State, State>) {
             jsonrpc: JSONRPC,
             id: 1,
             method: "version",
+        };
+        app.config.globalProperties.$socket.sendObj(jsonRPCRequest);
+    }
+};
+
+export const loadUsers = function (context: ActionContext<State, State>, filter: string) {
+    if (context.state.socket.isConnected) {
+        let jsonRPCRequest: JSONRPCRequest = {
+            jsonrpc: JSONRPC,
+            id: 1,
+            method: "access.users",
+            params: {
+                filter: filter,
+            }
         };
         app.config.globalProperties.$socket.sendObj(jsonRPCRequest);
     }
