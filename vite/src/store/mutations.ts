@@ -81,8 +81,11 @@ export const SET_ACCOUNT_NAME = (state: State, value: string) => {
     state.access.account.name = value;
 };
 
+export const SET_PANEL_TITLE = (state: State, value: string) => {
+    state.panel = value;
+};
+
 export const SOCKET_ONMESSAGE = (state: State, message: JSONRPCResponse) => {
-    console.log(message);
     state.socket.message = message;
     if (message.error) {
         if (message.error.code === 401) {
@@ -112,5 +115,9 @@ export const SOCKET_ONMESSAGE = (state: State, message: JSONRPCResponse) => {
     if (message.result?.account) {
         state.access.account.username = message.result?.account.username;
         state.access.account.name = message.result?.account.name;
+    }
+
+    if (message.result?.users) {
+        state.settings.access.users.list = message.result?.users;
     }
 };
