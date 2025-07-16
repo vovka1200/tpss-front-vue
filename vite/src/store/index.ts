@@ -1,8 +1,8 @@
 import {InjectionKey} from 'vue'
-import {createStore, mapActions, Store, useStore as baseUseStore} from 'vuex'
+import {createStore, Store, useStore as baseUseStore} from 'vuex'
 import {defaultState, State} from "./state";
-import * as actions from './actions';
-import * as mutations from './mutations';
+import * as actions from '@/store/actions';
+import * as mutations from '@/store/mutations';
 
 
 export const key: InjectionKey<Store<State>> = Symbol()
