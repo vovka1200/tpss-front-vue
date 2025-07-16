@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useStore} from "../store";
-import {computed} from "vue";
+import {computed, onMounted} from "vue";
 
 const store = useStore();
 
@@ -17,15 +17,19 @@ const name = computed({
   }
 })
 
+onMounted(() => {
+  store.commit('SET_PANEL_TITLE', 'Настройки пользователя');
+})
+
 </script>
 
 <template>
   <q-page padding class="text-black">
-    <h5>Пользователь</h5>
+    <div class="text-subtitle1">Пользователь</div>
     <q-card class="q-my-md">
       <q-card-section>
         <q-item-label>Имя пользователя</q-item-label>
-        <q-input readonly v-model="username"/>
+        <q-input readonly v-model="username" v-if="username"/>
       </q-card-section>
       <q-card-section>
         <q-item-label>Пароль</q-item-label>
@@ -33,7 +37,7 @@ const name = computed({
       </q-card-section>
       <q-card-section>
         <q-item-label>ФИО</q-item-label>
-        <q-input v-model="name"/>
+        <q-input v-model="name" v-if="name"/>
       </q-card-section>
     </q-card>
     <div class="row justify-end">
