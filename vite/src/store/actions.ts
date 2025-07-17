@@ -37,3 +37,17 @@ export const loadUsers = function (context: ActionContext<State, State>, filter:
         app.config.globalProperties.$socket.sendObj(jsonRPCRequest);
     }
 };
+
+export const loadGroups = function (context: ActionContext<State, State>, filter: string) {
+    if (context.state.socket.isConnected) {
+        let jsonRPCRequest: JSONRPCRequest = {
+            jsonrpc: JSONRPC,
+            id: 1,
+            method: "access.groups",
+            params: {
+                filter: filter,
+            }
+        };
+        app.config.globalProperties.$socket.sendObj(jsonRPCRequest);
+    }
+};
