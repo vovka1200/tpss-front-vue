@@ -1,11 +1,13 @@
 <script setup lang="ts">
 
-import {computed, onMounted, ref} from "vue";
-import {User} from "@/store/state";
+import {computed, ref} from "vue";
 import {useStore} from "@/store";
+import {User} from "@/models/access/users";
+import Card from "@/components/settings/access/users/Card.vue";
 
 const tableRef = ref();
 const filter = ref('');
+const card = ref(false);
 const loading = ref(false);
 const columns = [
   {
@@ -14,6 +16,14 @@ const columns = [
     label: 'ФИО',
     align: 'left',
     field: (row: User) => row.name,
+    sortable: true
+  },
+  {
+    name: 'username',
+    required: true,
+    label: 'Имя пользователя',
+    align: 'left',
+    field: (row: User) => row.username,
     sortable: true
   },
   {
@@ -50,7 +60,7 @@ const onRequest = (props) => {
 
 <template>
   <q-toolbar>
-    <q-btn flat round dense icon="o_add">
+    <q-btn flat round dense icon="o_add" @click="card=true">
       <q-tooltip>Добавить пользователя</q-tooltip>
     </q-btn>
     <q-space/>
@@ -70,7 +80,9 @@ const onRequest = (props) => {
       :filter="filter"
       @request="onRequest"
       v-model:pagination="pagination"
+      @row-click="card=true"
   />
+  <Card v-model="card"/>
 </template>
 
 <style scoped>
