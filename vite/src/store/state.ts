@@ -1,20 +1,7 @@
 import {JSONRPCResponse} from "json-rpc-2.0";
-
-export interface Rule {
-    object: string
-    method: string
-}
-
-export interface User {
-    id: string
-    name: string
-    groups: string[]
-}
-
-export interface Group {
-    id: string
-    name: string
-}
+import {Group} from "@/models/access/groups";
+import {User} from "@/models/access/users";
+import {Rule} from "@/models/access/rules";
 
 export interface State {
     socket: {
