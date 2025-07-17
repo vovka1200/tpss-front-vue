@@ -40,11 +40,11 @@ const login = () => {
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-input dense autofocus v-model="username" label="Пользователь"/>
+        <q-input dense autofocus v-model="username" label="Пользователь" label-color="dark"/>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-input dense v-model="password" type="password" label="Пароль"/>
+        <q-input dense v-model="password" type="password" label="Пароль" label-color="dark"/>
       </q-card-section>
 
       <q-card-actions align="right" class="text-dark">
