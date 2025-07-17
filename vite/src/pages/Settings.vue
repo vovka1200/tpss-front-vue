@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Groups from "@/components/settings/access/Groups.vue";
-import Users from "@/components/settings/access/Users.vue";
-import {useStore} from "@/store";
-import {onMounted, ref} from "vue";
+import GroupsTable  from '@/components/settings/access/groups/Table.vue';
+import UsersTable from '@/components/settings/access/users/Table.vue';
+import {useStore} from '@/store';
+import {onMounted, ref} from 'vue';
 
 const tab = ref('users');
 
@@ -32,11 +32,11 @@ onMounted(() => {
     <q-tab-panels v-model="tab" animated>
 
       <q-tab-panel name="users">
-        <Users/>
+        <UsersTable/>
       </q-tab-panel>
 
       <q-tab-panel name="groups">
-        <Groups/>
+        <GroupsTable/>
       </q-tab-panel>
 
       <q-tab-panel name="variables">
