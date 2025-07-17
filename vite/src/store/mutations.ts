@@ -120,4 +120,8 @@ export const SOCKET_ONMESSAGE = (state: State, message: JSONRPCResponse) => {
     if (message.result?.users) {
         state.settings.access.users.list = message.result?.users;
     }
+
+    if (message.result?.groups) {
+        state.settings.access.groups.list = message.result?.groups;
+    }
 };
