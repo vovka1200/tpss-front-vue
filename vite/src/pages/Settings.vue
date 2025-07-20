@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GroupsTable  from '@/components/settings/access/groups/Table.vue';
+import GroupsTable from '@/components/settings/access/groups/Table.vue';
 import UsersTable from '@/components/settings/access/users/Table.vue';
 import {useStore} from '@/store';
 import {onMounted, ref} from 'vue';
@@ -14,7 +14,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="q-py-md text-dark">
+  <div class="q-py-md text-dark" v-if="store.getters.allowed('settings')">
     <q-tabs
         v-model="tab"
         dense

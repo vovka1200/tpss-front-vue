@@ -34,7 +34,7 @@ const panel = computed(() => {
         <q-btn dense flat icon="o_info" @click="$router.push('/about')">
           <q-tooltip>О программе</q-tooltip>
         </q-btn>
-        <q-btn dense flat icon="o_settings" @click="$router.push('/settings')">
+        <q-btn dense flat icon="o_settings" @click="$router.push('/settings')" v-if="store.getters.allowed('settings')">
           <q-tooltip>Панель управления</q-tooltip>
         </q-btn>
       </q-toolbar>
