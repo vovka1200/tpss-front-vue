@@ -8,7 +8,7 @@ export const login = function (context: ActionContext<State, State>) {
         let jsonRPCRequest: JSONRPCRequest = {
             jsonrpc: JSONRPC,
             id: 1,
-            method: "access.login",
+            method: "access.users.user.login",
             params: {
                 "username": context.state.access.account.username,
                 "password": context.state.access.account.password,
@@ -29,7 +29,7 @@ export const loadUsers = function (context: ActionContext<State, State>, filter:
         let jsonRPCRequest: JSONRPCRequest = {
             jsonrpc: JSONRPC,
             id: 1,
-            method: "access.users",
+            method: "access.users.list",
             params: {
                 filter: filter,
             }
@@ -43,7 +43,7 @@ export const loadGroups = function (context: ActionContext<State, State>, filter
         let jsonRPCRequest: JSONRPCRequest = {
             jsonrpc: JSONRPC,
             id: 1,
-            method: "access.groups",
+            method: "access.groups.list",
             params: {
                 filter: filter,
             }
