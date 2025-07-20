@@ -41,4 +41,8 @@ a,
         flex-wrap: nowrap;
         align-items: center;
     }
+
+    .q-dialog__inner--minimized > div {
+        max-width: 75vw;
+    }
 }
