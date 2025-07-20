@@ -38,7 +38,6 @@ export const SOCKET_ONCLOSE = (state: State, event: Event) => {
 };
 
 export const SOCKET_ONERROR = (state: State, event: Event) => {
-    console.error(state, event);
     Notify.create({
         icon: 'error',
         color: 'negative',
@@ -47,7 +46,6 @@ export const SOCKET_ONERROR = (state: State, event: Event) => {
 };
 
 export const SOCKET_RECONNECT = (state: State, count: number) => {
-    console.info("Message system reconnecting...", state, count);
     Notify.create({
         icon: 'restart_alt',
         color: 'warning',
@@ -93,7 +91,7 @@ export const SOCKET_ONMESSAGE = (state: State, message: JSONRPCResponse) => {
                 Notify.create({
                     icon: 'block',
                     color: 'negative',
-                    message: 'Access denied!',
+                    message: 'Доступ ограничен',
                 });
             }
             state.authDialogVisible = true;
@@ -109,19 +107,23 @@ export const SOCKET_ONMESSAGE = (state: State, message: JSONRPCResponse) => {
     }
 
     if (message.result?.version) {
-        state.apiVersion = message.result?.version;
+        state.apiVersion = message.result.version;
     }
 
     if (message.result?.account) {
-        state.access.account.username = message.result?.account.username;
-        state.access.account.name = message.result?.account.name;
+        state.access.account.username = message.result.account.username;
+        state.access.account.name = message.result.account.name;
+    }
+
+    if (message.result?.matrix) {
+        state.access.matrix = message.result.matrix;
     }
 
     if (message.result?.users) {
-        state.settings.access.users.list = message.result?.users;
+        state.settings.access.users.list = message.result.users;
     }
 
     if (message.result?.groups) {
-        state.settings.access.groups.list = message.result?.groups;
+        state.settings.access.groups.list = message.result.groups;
     }
 };
