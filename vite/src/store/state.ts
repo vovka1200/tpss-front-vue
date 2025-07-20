@@ -1,7 +1,7 @@
 import {JSONRPCResponse} from "json-rpc-2.0";
 import {Group} from "@/models/access/groups";
 import {User} from "@/models/access/users";
-import {Rule} from "@/models/access/rules";
+import {AccessMatrix} from "@/models/access/maxrix";
 
 export interface State {
     socket: {
@@ -23,7 +23,7 @@ export interface State {
             password: string
             name: string
         },
-        matrix: Rule[]
+        matrix: AccessMatrix,
     },
     settings: {
         access: {
