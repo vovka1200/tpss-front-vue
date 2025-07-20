@@ -1,11 +1,12 @@
 <script setup lang="ts">
 
-import {computed, ref} from "vue";
+import {computed, ref, shallowReactive} from "vue";
 import {useStore} from "@/store";
 import {User} from "@/models/access/users";
 import Card from "@/components/settings/access/users/Card.vue";
 
 const tableRef = ref();
+const rowData = shallowReactive(new User());
 const filter = ref('');
 const card = ref(false);
 const loading = ref(false);
@@ -80,9 +81,9 @@ const onRequest = (props) => {
       :filter="filter"
       @request="onRequest"
       v-model:pagination="pagination"
-      @row-click="card=true"
+      @row-click="(env,row)=>{rowData=row;card=true}"
   />
-  <Card v-model="card"/>
+  <Card v-model="card" :data="rowData"/>
 </template>
 
 <style scoped>
