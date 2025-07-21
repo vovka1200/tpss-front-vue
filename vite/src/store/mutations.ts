@@ -1,4 +1,4 @@
-import {State} from './state'
+import {defaultState, State} from './state'
 import app from '../main'
 import {JSONRPC, JSONRPCRequest, JSONRPCResponse} from 'json-rpc-2.0'
 import {Notify} from 'quasar';
@@ -81,6 +81,16 @@ export const SET_ACCOUNT_NAME = (state: State, value: string) => {
 
 export const SET_PANEL_TITLE = (state: State, value: string) => {
     state.panel = value;
+};
+
+export const LOGOUT = (state: State) => {
+    Object.assign(state, defaultState);
+    state.apiVersion = '-';
+    state.access.account.name = '';
+    state.access.account.username = '';
+    state.access.account.password = '';
+    state.access.account.id = '';
+    state.authDialogVisible = true;
 };
 
 export const SOCKET_ONMESSAGE = (state: State, message: JSONRPCResponse) => {

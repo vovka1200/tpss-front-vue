@@ -3,6 +3,7 @@ import Drawer from "@/components/Drawer.vue";
 import {RouterView} from "vue-router";
 import {computed, ref} from "vue";
 import {useStore} from "@/store";
+import UserMenu from "@/components/UserMenu.vue";
 
 const openDrawer = ref(true);
 const store = useStore();
@@ -26,8 +27,9 @@ const panel = computed(() => {
         </q-toolbar-title>
         <q-toolbar-title>{{ panel }}</q-toolbar-title>
         <q-space/>
-        <q-btn dense flat icon="o_account_circle" @click="$router.push('/account')">
+        <q-btn dense flat icon="o_account_circle">
           <q-tooltip> Настройки пользователя</q-tooltip>
+          <UserMenu/>
         </q-btn>
         <q-btn dense flat icon="o_info" @click="$router.push('/about')">
           <q-tooltip>О программе</q-tooltip>
