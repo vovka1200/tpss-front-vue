@@ -3,7 +3,7 @@
 import {User} from "@/models/access/users";
 import {PropType} from "vue";
 
-const visible = defineModel<Boolean>();
+const visible = defineModel<boolean>();
 
 defineProps({
   data: {

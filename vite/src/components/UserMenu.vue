@@ -2,7 +2,6 @@
 
 import {useStore} from "@/store";
 import {computed, onMounted, ref} from "vue";
-import {defaultState} from "@/store/state";
 
 const open = ref(false);
 const store = useStore();

@@ -97,7 +97,7 @@ export const SOCKET_ONMESSAGE = (state: State, message: JSONRPCResponse) => {
     state.socket.message = message;
     if (message.error) {
         if (message.error.code === 401) {
-            if (state.authDialogVisible === false) {
+            if (!state.authDialogVisible) {
                 Notify.create({
                     icon: 'block',
                     color: 'negative',

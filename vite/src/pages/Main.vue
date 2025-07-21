@@ -21,7 +21,7 @@ const panel = computed(() => {
         <q-btn dense flat round icon="menu" @click="openDrawer=!openDrawer"/>
         <q-toolbar-title shrink>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-black.svg">
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-black.svg" alt="">
           </q-avatar>
           T.P.S.S.
         </q-toolbar-title>
