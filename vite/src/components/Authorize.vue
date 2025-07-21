@@ -27,7 +27,10 @@ const password = computed({
 
 const login = () => {
   store.commit('SET_AUTH_DIALOG_VISIBLE', false);
-  store.dispatch('login')
+  store.dispatch('login', {
+    username: store.state.access.account.username,
+    password: store.state.access.account.password
+  });
 };
 
 </script>
