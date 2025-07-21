@@ -8,10 +8,6 @@
     font-weight: normal;
 }
 
-body {
-    background-color: var(--q-secondary);
-}
-
 a,
 .green {
     text-decoration: none;

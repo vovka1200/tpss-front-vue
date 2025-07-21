@@ -16,7 +16,7 @@ const panel = computed(() => {
 <template>
   <q-layout view="hHh LpR fFf">
 
-    <q-header elevated class="text-dark bg-secondary">
+    <q-header elevated>
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="openDrawer=!openDrawer"/>
         <q-toolbar-title shrink>

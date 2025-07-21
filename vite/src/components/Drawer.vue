@@ -17,7 +17,6 @@ defineProps({
       bordered
       :width="180"
       :breakpoint="500"
-      class="text-dark bg-primary"
   >
     <q-scroll-area class="fit">
       <q-list padding class="menu-list">
