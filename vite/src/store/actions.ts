@@ -9,15 +9,17 @@ function send(context: ActionContext<State, State>, req: JSONRPCRequest) {
     }
 }
 
-export const login = function (context: ActionContext<State, State>) {
+/**
+ * Запрос на аутентификацию
+ * @param {ActionContext<State, State>} context
+ * @param {{ username: string, password: string }} payload
+ */
+export const login = function (context: ActionContext<State, State>, payload: { username: string, password: string }) {
     send(context, {
         jsonrpc: JSONRPC,
         id: 1,
         method: "access.users.user.login",
-        params: {
-            "username": context.state.access.account.username,
-            "password": context.state.access.account.password,
-        }
+        params: payload,
     });
     send(context, {
         jsonrpc: JSONRPC,
@@ -26,6 +28,11 @@ export const login = function (context: ActionContext<State, State>) {
     });
 };
 
+/**
+ * Запрос загрузки списка пользователей по фильтру
+ * @param {ActionContext<State, State>} context
+ * @param {string} filter
+ */
 export const loadUsers = function (context: ActionContext<State, State>, filter: string) {
     send(context, {
         jsonrpc: JSONRPC,
@@ -37,6 +44,11 @@ export const loadUsers = function (context: ActionContext<State, State>, filter:
     });
 };
 
+/**
+ * Запрос загрузки списка групп по фильтру
+ * @param {ActionContext<State, State>} context
+ * @param {string} filter
+ */
 export const loadGroups = function (context: ActionContext<State, State>, filter: string) {
     send(context, {
         jsonrpc: JSONRPC,

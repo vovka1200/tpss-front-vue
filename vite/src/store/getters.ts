@@ -2,7 +2,7 @@ import {State} from "@/store/state";
 import {Method} from "@/models/access/maxrix";
 
 /**
- * Возвращает true, если метод доступен
+ * Возвращает true, если метод объекта доступен
  * @param {State} state
  * @returns Boolean
  */
