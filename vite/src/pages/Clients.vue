@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <q-page padding class="text-black">
-    <div class="text-subtitle1">Клиенты</div>
+  <q-page padding>
+    <div>Клиенты</div>
   </q-page>
 </template>
 

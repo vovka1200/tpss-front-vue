@@ -16,7 +16,7 @@ defineProps({
 </script>
 
 <template>
-  <q-dialog v-bind:model-value="visible" class="text-dark" @hide="visible=false">
+  <q-dialog v-bind:model-value="visible" @hide="visible=false">
     <q-card>
       <q-toolbar>
         <q-toolbar-title>Группа</q-toolbar-title>
@@ -30,13 +30,13 @@ defineProps({
 
       <q-card-section>
         <q-item>
-          <q-input v-bind:model-value="data?.name" label="Название" label-color="dark"/>
+          <q-input v-bind:model-value="data?.name" label="Название"/>
         </q-item>
       </q-card-section>
 
       <q-separator/>
 
-      <q-card-actions align="right" class="text-dark">
+      <q-card-actions align="right">
         <q-btn flat class="bg-positive" label="Сохранить"/>
         <q-btn flat class="bg-accent" label="Отмена" @click="visible=false"/>
       </q-card-actions>

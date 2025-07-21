@@ -14,11 +14,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="q-py-md text-dark" v-if="store.getters.allowed('settings')">
+  <div class="q-py-md" v-if="store.getters.allowed('settings')">
     <q-tabs
         v-model="tab"
         dense
-        class="primary"
         active-color="text-dark"
         indicator-color="text-grey"
         align="left"

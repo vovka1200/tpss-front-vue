@@ -36,7 +36,7 @@ const login = () => {
 </script>
 
 <template>
-  <q-dialog v-bind:model-value="visible" persistent class="text-dark">
+  <q-dialog v-bind:model-value="visible" persistent>
     <q-card style="min-width: 350px">
       <q-card-section>
         <div class="text-h6">Аутентификация</div>
@@ -50,7 +50,7 @@ const login = () => {
         <q-input dense v-model="password" type="password" label="Пароль"/>
       </q-card-section>
 
-      <q-card-actions align="right" class="text-dark">
+      <q-card-actions align="right">
         <q-btn flat class="bg-accent" label="Войти" @click="login"/>
       </q-card-actions>
 

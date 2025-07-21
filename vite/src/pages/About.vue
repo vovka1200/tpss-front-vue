@@ -13,7 +13,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <q-page padding class="text-black">
+  <q-page padding>
     <div class="text-subtitle1">Task Tracker for Production, Sale and Support</div>
     <p>Система управления заданиями по производству, продажи и сопровождения</p>
     <q-card>
