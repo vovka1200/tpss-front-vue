@@ -37,8 +37,8 @@ defineProps({
       <q-separator/>
 
       <q-card-actions align="right">
-        <q-btn flat class="bg-positive" label="Сохранить"/>
-        <q-btn flat class="bg-accent" label="Отмена" @click="visible=false"/>
+        <q-btn flat color="positive" label="Сохранить" icon="save"/>
+        <q-btn flat color="accent" label="Отмена" icon="cancel" @click="visible=false"/>
       </q-card-actions>
 
     </q-card>

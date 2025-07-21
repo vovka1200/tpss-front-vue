@@ -93,11 +93,8 @@ export const SET_GROUPS_FILTER = (state: State, value: string) => {
 
 export const LOGOUT = (state: State) => {
     Object.assign(state, defaultState);
-    state.apiVersion = '-';
-    state.access.account.name = '';
-    state.access.account.username = '';
-    state.access.account.password = '';
-    state.access.account.id = '';
+    state.apiVersion = defaultState.apiVersion;
+    state.access.account = defaultState.access.account;
     state.authDialogVisible = true;
 };
 
