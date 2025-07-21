@@ -3,51 +3,47 @@ import {State} from "./state";
 import app from "../main";
 import {JSONRPC, JSONRPCRequest} from "json-rpc-2.0";
 
-export const login = function (context: ActionContext<State, State>) {
+function send(context: ActionContext<State, State>, req: JSONRPCRequest) {
     if (context.state.socket.isConnected) {
-        let jsonRPCRequest: JSONRPCRequest = {
-            jsonrpc: JSONRPC,
-            id: 1,
-            method: "access.users.user.login",
-            params: {
-                "username": context.state.access.account.username,
-                "password": context.state.access.account.password,
-            }
-        };
-        app.config.globalProperties.$socket.sendObj(jsonRPCRequest);
-        jsonRPCRequest = {
-            jsonrpc: JSONRPC,
-            id: 1,
-            method: "version",
-        };
-        app.config.globalProperties.$socket.sendObj(jsonRPCRequest);
+        app.config.globalProperties.$socket.sendObj(req);
     }
+}
+
+export const login = function (context: ActionContext<State, State>) {
+    send(context, {
+        jsonrpc: JSONRPC,
+        id: 1,
+        method: "access.users.user.login",
+        params: {
+            "username": context.state.access.account.username,
+            "password": context.state.access.account.password,
+        }
+    });
+    send(context, {
+        jsonrpc: JSONRPC,
+        id: 1,
+        method: "version",
+    });
 };
 
 export const loadUsers = function (context: ActionContext<State, State>, filter: string) {
-    if (context.state.socket.isConnected) {
-        let jsonRPCRequest: JSONRPCRequest = {
-            jsonrpc: JSONRPC,
-            id: 1,
-            method: "access.users.list",
-            params: {
-                filter: filter,
-            }
-        };
-        app.config.globalProperties.$socket.sendObj(jsonRPCRequest);
-    }
+    send(context, {
+        jsonrpc: JSONRPC,
+        id: 1,
+        method: "access.users.list",
+        params: {
+            filter: filter,
+        }
+    });
 };
 
 export const loadGroups = function (context: ActionContext<State, State>, filter: string) {
-    if (context.state.socket.isConnected) {
-        let jsonRPCRequest: JSONRPCRequest = {
-            jsonrpc: JSONRPC,
-            id: 1,
-            method: "access.groups.list",
-            params: {
-                filter: filter,
-            }
-        };
-        app.config.globalProperties.$socket.sendObj(jsonRPCRequest);
-    }
+    send(context, {
+        jsonrpc: JSONRPC,
+        id: 1,
+        method: "access.groups.list",
+        params: {
+            filter: filter,
+        }
+    });
 };
