@@ -28,9 +28,11 @@ export interface State {
     settings: {
         access: {
             users: {
+                filter: string,
                 list: User[]
             }
             groups: {
+                filter: string,
                 list: Group[]
             }
         }
@@ -62,9 +64,11 @@ export const defaultState: State = {
     settings: {
         access: {
             users: {
+                filter: '',
                 list: []
             },
             groups: {
+                filter: '',
                 list: []
             },
         }

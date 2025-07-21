@@ -6,7 +6,6 @@ import {Group} from "@/models/access/groups";
 import Card from "@/components/settings/access/groups/Card.vue";
 
 const tableRef = ref();
-const filter = ref('');
 const card = ref(false);
 const rowData = shallowReactive(new Group());
 const loading = ref(false);
@@ -42,11 +41,18 @@ const rows = computed(() => {
   return store.state.settings.access.groups.list;
 });
 
-const onRequest = (props) => {
-  if (props.filter !== '') {
-    loading.value = true;
-    store.dispatch('loadGroups', props.filter);
+const filter = computed({
+  get() {
+    return store.state.settings.access.groups.filter;
+  },
+  set(value) {
+    store.commit('SET_GROUPS_FILTER', value)
   }
+})
+
+const onRequest = () => {
+  loading.value = true;
+  store.dispatch('loadGroups');
 };
 
 </script>

@@ -31,15 +31,14 @@ export const login = function (context: ActionContext<State, State>, payload: { 
 /**
  * Запрос загрузки списка пользователей по фильтру
  * @param {ActionContext<State, State>} context
- * @param {string} filter
  */
-export const loadUsers = function (context: ActionContext<State, State>, filter: string) {
+export const loadUsers = function (context: ActionContext<State, State>) {
     send(context, {
         jsonrpc: JSONRPC,
         id: 1,
         method: "access.users.list",
         params: {
-            filter: filter,
+            filter: context.state.settings.access.users.filter,
         }
     });
 };
@@ -47,15 +46,14 @@ export const loadUsers = function (context: ActionContext<State, State>, filter:
 /**
  * Запрос загрузки списка групп по фильтру
  * @param {ActionContext<State, State>} context
- * @param {string} filter
  */
-export const loadGroups = function (context: ActionContext<State, State>, filter: string) {
+export const loadGroups = function (context: ActionContext<State, State>) {
     send(context, {
         jsonrpc: JSONRPC,
         id: 1,
         method: "access.groups.list",
         params: {
-            filter: filter,
+            filter: context.state.settings.access.groups.filter,
         }
     });
 };

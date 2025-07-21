@@ -23,8 +23,8 @@ onMounted(() => {
         align="left"
         narrow-indicator
     >
-      <q-tab name="users" label="Пользователи" icon="o_person"/>
-      <q-tab name="groups" label="Группы" icon="o_groups"/>
+      <q-tab name="users" label="Пользователи" icon="o_person" @click="store.dispatch('loadUsers')"/>
+      <q-tab name="groups" label="Группы" icon="o_groups" @click="store.dispatch('loadGroups')"/>
       <q-tab name="variables" label="Переменные" icon="o_settings_applications"/>
     </q-tabs>
 

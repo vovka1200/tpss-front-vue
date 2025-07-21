@@ -7,7 +7,6 @@ import Card from "@/components/settings/access/users/Card.vue";
 
 const tableRef = ref();
 const rowData = shallowReactive(new User());
-const filter = ref('');
 const card = ref(false);
 const loading = ref(false);
 const columns = [
@@ -50,11 +49,18 @@ const rows = computed(() => {
   return store.state.settings.access.users.list;
 });
 
-const onRequest = (props) => {
-  if (props.filter !== '') {
-    loading.value = true;
-    store.dispatch('loadUsers', props.filter);
+const filter = computed({
+  get() {
+    return store.state.settings.access.users.filter;
+  },
+  set(value) {
+    store.commit('SET_USERS_FILTER', value)
   }
+})
+
+const onRequest = () => {
+  loading.value = true;
+  store.dispatch('loadUsers');
 };
 
 </script>

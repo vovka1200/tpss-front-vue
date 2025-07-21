@@ -83,6 +83,14 @@ export const SET_PANEL_TITLE = (state: State, value: string) => {
     state.panel = value;
 };
 
+export const SET_USERS_FILTER = (state: State, value: string) => {
+    state.settings.access.users.filter = value;
+};
+
+export const SET_GROUPS_FILTER = (state: State, value: string) => {
+    state.settings.access.groups.filter = value;
+};
+
 export const LOGOUT = (state: State) => {
     Object.assign(state, defaultState);
     state.apiVersion = '-';
