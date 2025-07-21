@@ -28,7 +28,7 @@ app.use(Quasar, {
     },
     config: {
         brand: {
-            primary: '#f6fff6',
+            primary: '#fafffa',
             secondary: '#ecf3ec',
             accent: '#1f82c0',
             dark: '#05250e',
