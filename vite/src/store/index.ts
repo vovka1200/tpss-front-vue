@@ -1,20 +1,25 @@
-import {InjectionKey} from 'vue'
-import {createStore, Store, useStore as baseUseStore} from 'vuex'
-import {defaultState, State} from "./state";
-import * as actions from '@/store/actions';
-import * as mutations from '@/store/mutations';
-import * as getters from '@/store/getters';
+import {defineStore} from "pinia";
+import {ref} from "vue";
 
 
-export const key: InjectionKey<Store<State>> = Symbol()
+export const useMainStore = defineStore('main', () => {
+    const authDialogVisible = ref(false);
+    const panel = ref('');
+    const apiVersion = ref('');
 
-export const store = createStore<State>({
-    state: defaultState,
-    actions: actions,
-    mutations: mutations,
-    getters: getters,
+    function showAuthorizationDialog() {
+        authDialogVisible.value = true;
+    }
+
+    function hideAuthorizationDialog() {
+        authDialogVisible.value = false;
+    }
+
+    return {
+        authDialogVisible,
+        panel,
+        showAuthorizationDialog,
+        hideAuthorizationDialog,
+        apiVersion,
+    };
 });
-
-export function useStore() {
-    return baseUseStore(key)
-}

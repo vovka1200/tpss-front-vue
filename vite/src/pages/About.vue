@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import {useStore} from "@/store";
-import {computed, onMounted} from "vue";
 
-const store = useStore();
-const version = computed(() => {
-  return store.state.apiVersion;
-})
+import {useMainStore} from "@/store";
+import {onMounted} from "vue";
+
+const mainStore = useMainStore();
 
 onMounted(() => {
-  store.commit('SET_PANEL_TITLE', 'О программе');
-})
+  mainStore.panel = 'О программе';
+});
 </script>
 
 <template>
@@ -20,7 +18,7 @@ onMounted(() => {
       <q-card-section>
         <ul>
           <li>Версия GUI:&nbsp;1.0.0</li>
-          <li>Версия API:&nbsp;{{ version }}</li>
+          <li>Версия API:&nbsp;{{ mainStore.apiVersion }}</li>
         </ul>
       </q-card-section>
     </q-card>

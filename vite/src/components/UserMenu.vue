@@ -1,36 +1,44 @@
 <script setup lang="ts">
 
-import {useStore} from "@/store";
+import {useAccountStore} from "@/store/access/account";
 import {computed, onMounted, ref} from "vue";
+import {useMainStore} from "@/store";
 
 const open = ref(false);
-const store = useStore();
+const mainStore = useMainStore();
+const accountStore = useAccountStore();
 
 const username = computed(() => {
-  return store.state.access.account.username;
+  return accountStore.username;
 })
 
 const name = computed({
   get() {
-    return store.state.access.account.name;
+    return accountStore.name;
   },
   set(value) {
-    store.commit('SET_ACCOUNT_NAME', value)
+    accountStore.name = value;
   }
 })
 
 const password = computed({
   get() {
-    return store.state.access.account.password;
+    return accountStore.password;
   },
   set(value) {
-    store.commit('SET_PASSWORD', value)
+    accountStore.password = value;
   }
 })
 
 onMounted(() => {
-  store.commit('SET_PANEL_TITLE', 'Настройки пользователя');
+  mainStore.panel = 'Настройки пользователя';
 })
+
+const logout = () => {
+  open.value = false;
+  accountStore.logout();
+};
+
 </script>
 
 <template>
@@ -53,7 +61,7 @@ onMounted(() => {
           <q-input v-model="name" label="ФИО"/>
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn dense flat icon="logout" label="Выйти" @click="open=false;store.commit('LOGOUT')"/>
+          <q-btn dense flat icon="logout" label="Выйти" @click="logout"/>
         </q-card-actions>
       </q-card>
     </div>

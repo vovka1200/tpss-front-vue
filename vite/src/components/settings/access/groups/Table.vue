@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
 import {computed, ref, shallowReactive} from "vue";
-import {useStore} from "@/store";
 import {Group} from "@/models/access/groups";
 import Card from "@/components/settings/access/groups/Card.vue";
+import {useGroupsStore} from "@/store/access/groups";
 
 const tableRef = ref();
 const card = ref(false);
@@ -35,24 +35,24 @@ const pagination = ref({
   rowsNumber: 10
 });
 
-const store = useStore();
+const store = useGroupsStore();
 const rows = computed(() => {
   loading.value = false;
-  return store.state.settings.access.groups.list;
+  return store.list;
 });
 
 const filter = computed({
   get() {
-    return store.state.settings.access.groups.filter;
+    return store.filter;
   },
   set(value) {
-    store.commit('SET_GROUPS_FILTER', value)
+    store.filter = value;
   }
 })
 
 const onRequest = () => {
   loading.value = true;
-  store.dispatch('loadGroups');
+  store.load();
 };
 
 </script>

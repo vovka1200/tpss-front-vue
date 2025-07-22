@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
 import {computed, ref, shallowReactive} from "vue";
-import {useStore} from "@/store";
 import {User} from "@/models/access/users";
 import Card from "@/components/settings/access/users/Card.vue";
+import {useUsersStore} from "@/store/access/users";
 
 const tableRef = ref();
 const rowData = shallowReactive(new User());
@@ -43,24 +43,24 @@ const pagination = ref({
   rowsNumber: 10
 });
 
-const store = useStore();
+const store = useUsersStore();
 const rows = computed(() => {
   loading.value = false;
-  return store.state.settings.access.users.list;
+  return store.list;
 });
 
 const filter = computed({
   get() {
-    return store.state.settings.access.users.filter;
+    return store.filter;
   },
   set(value) {
-    store.commit('SET_USERS_FILTER', value)
+    store.filter = value;
   }
 })
 
 const onRequest = () => {
   loading.value = true;
-  store.dispatch('loadUsers');
+  store.load();
 };
 
 </script>

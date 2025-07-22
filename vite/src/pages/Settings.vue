@@ -1,20 +1,30 @@
 <script setup lang="ts">
 import GroupsTable from '@/components/settings/access/groups/Table.vue';
 import UsersTable from '@/components/settings/access/users/Table.vue';
-import {useStore} from '@/store';
+import {useMainStore} from '@/store';
 import {onMounted, ref} from 'vue';
+import {useAccountStore} from "@/store/access/account";
+import {useUsersStore} from "@/store/access/users";
+import {useGroupsStore} from "@/store/access/groups";
 
 const tab = ref('users');
 
-const store = useStore();
+const mainStore = useMainStore();
+const accountStore = useAccountStore();
+const usersStore = useUsersStore();
+const groupsStore = useGroupsStore();
+
 onMounted(() => {
-  store.commit('SET_PANEL_TITLE', 'Панель управления');
+  mainStore.panel = 'Панель управления';
+  if (accountStore.allowed('settings')) {
+    usersStore.load();
+  }
 })
 
 </script>
 
 <template>
-  <div class="q-py-md" v-if="store.getters.allowed('settings')">
+  <div class="q-py-md" v-if="accountStore.allowed('settings')">
     <q-tabs
         v-model="tab"
         dense
@@ -23,8 +33,8 @@ onMounted(() => {
         align="left"
         narrow-indicator
     >
-      <q-tab name="users" label="Пользователи" icon="o_person" @click="store.dispatch('loadUsers')"/>
-      <q-tab name="groups" label="Группы" icon="o_groups" @click="store.dispatch('loadGroups')"/>
+      <q-tab name="users" label="Пользователи" icon="o_person" @click="usersStore.load()"/>
+      <q-tab name="groups" label="Группы" icon="o_groups" @click="groupsStore.load()"/>
       <q-tab name="variables" label="Переменные" icon="o_settings_applications"/>
     </q-tabs>
 

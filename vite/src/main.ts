@@ -1,6 +1,5 @@
 import {createApp} from 'vue'
 import App from './App.vue'
-import {store, key} from './store'
 import VueNativeSock from 'vue-native-websocket-vue3';
 import router from "./router";
 import {Quasar, Notify} from 'quasar'
@@ -9,13 +8,18 @@ import langRu from 'quasar/lang/ru'
 import '@quasar/extras/material-icons/material-icons.css'
 import '@quasar/extras/material-icons-outlined/material-icons-outlined.css'
 import './assets/main.css'
+import {useWebsocketStore} from '@/store/websocket'
+import {createPinia} from "pinia";
+
+const store = createPinia();
 
 const app = createApp(App)
-app.use(store, key)
+app.use(store)
 app.use(router)
+const useSocketStore = useWebsocketStore();
 app.use(VueNativeSock,
     import.meta.env.VITE_TPSS_API_URL, {
-        store: store,
+        store: useSocketStore,
         format: 'json',
         reconnection: true,
         reconnectionAttempts: 12,

@@ -1,36 +1,37 @@
 <script setup lang="ts">
-import {computed} from "vue";
-import {useStore} from "@/store";
 
-const store = useStore();
+import {computed} from "vue";
+import {useAccountStore} from "@/store/access/account";
+import {useMainStore} from "@/store";
+
+const accountStore = useAccountStore();
+const mainStore = useMainStore();
+
 const visible = computed(() => {
-  return store.state.authDialogVisible;
+  return mainStore.authDialogVisible;
 })
 
 const username = computed({
   get() {
-    return store.state.access.account.username;
+    return accountStore.username;
   },
   set(value) {
-    store.commit('SET_USERNAME', value)
+    accountStore.username = value;
   }
 })
 
 const password = computed({
   get() {
-    return store.state.access.account.password;
+    return accountStore.password;
   },
   set(value) {
-    store.commit('SET_PASSWORD', value)
+    accountStore.password = value;
   }
 })
 
 const login = () => {
-  store.commit('SET_AUTH_DIALOG_VISIBLE', false);
-  store.dispatch('login', {
-    username: store.state.access.account.username,
-    password: store.state.access.account.password
-  });
+  mainStore.showAuthorizationDialog();
+  accountStore.login();
 };
 
 </script>

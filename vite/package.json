@@ -23,7 +23,7 @@
     "vite": "^6.3.5",
     "vue-tsc": "^0.0.24",
     "vue-native-websocket-vue3": "^3.1.8",
-    "vuex": "^4.1.0",
+    "pinia": "^3.0.3",
     "sass-embedded": "^1.89.2",
     "json-rpc-2.0": "^1.7.1"
   }

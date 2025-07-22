@@ -2,13 +2,15 @@
 import Drawer from "@/components/Drawer.vue";
 import {RouterView} from "vue-router";
 import {computed, ref} from "vue";
-import {useStore} from "@/store";
+import {useMainStore} from "@/store";
 import UserMenu from "@/components/UserMenu.vue";
+import {useAccountStore} from "@/store/access/account";
 
 const openDrawer = ref(true);
-const store = useStore();
+const mainStore = useMainStore();
+const accountStore = useAccountStore();
 const panel = computed(() => {
-  return store.state.panel
+  return mainStore.panel
 });
 
 </script>
@@ -34,7 +36,7 @@ const panel = computed(() => {
         <q-btn dense flat icon="o_info" @click="$router.push('/about')">
           <q-tooltip>О программе</q-tooltip>
         </q-btn>
-        <q-btn dense flat icon="o_settings" @click="$router.push('/settings')" v-if="store.getters.allowed('settings')">
+        <q-btn dense flat icon="o_settings" @click="$router.push('/settings')" v-if="accountStore.allowed('settings')">
           <q-tooltip>Панель управления</q-tooltip>
         </q-btn>
       </q-toolbar>
