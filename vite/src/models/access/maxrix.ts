@@ -2,7 +2,7 @@ export type AccessMatrix = Rule[];
 
 export interface Rule {
     object: String
-    methods: Method[]
+    access: Method[]
 }
 
 export enum Method {

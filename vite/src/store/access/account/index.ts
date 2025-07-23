@@ -59,7 +59,7 @@ export const useAccountStore = defineStore('account', () => {
     function allowed(objectName: String, method: Method = Method.read) {
         if (matrix.value.length > 0) {
             return matrix.value
-                .findIndex(r => r.object === objectName && r.methods?.includes(method)) > -1;
+                .findIndex(r => r.object === objectName && r.access?.includes(method)) > -1;
         } else {
             return false;
         }
