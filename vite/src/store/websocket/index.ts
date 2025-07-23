@@ -106,11 +106,11 @@ export const useWebsocketStore = defineStore('websocket', () => {
                 if (accountStore.token != '') {
                     accountStore.login();
                 } else {
-                    if (!mainStore.authDialogVisible) {
+                    if (!mainStore.authDialogVisible || error.message.includes('failed')) {
                         Notify.create({
                             icon: 'block',
                             color: 'negative',
-                            message: 'API: Доступ ограничен',
+                            message: 'API: Доступ запрещён',
                         });
                     }
                     mainStore.showAuthorizationDialog();
