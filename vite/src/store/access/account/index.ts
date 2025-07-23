@@ -13,14 +13,22 @@ export const useAccountStore = defineStore('account', () => {
     const username = ref('');
     const password = ref('');
     const name = ref('');
+    const token = ref('');
     const matrix = ref<AccessMatrix>([]);
 
     function login() {
+        const tmpToken: string = token.value;
+        token.value = '';
         websocket.send({
             jsonrpc: JSONRPC,
             id: 1,
             method: "access.users.user.login",
-            params: {username: username.value, password: password.value},
+            params: tmpToken != '' ? {
+                token: tmpToken,
+            } : {
+                username: username.value,
+                password: password.value,
+            },
         });
         websocket.send({
             jsonrpc: JSONRPC,
@@ -35,6 +43,7 @@ export const useAccountStore = defineStore('account', () => {
             id.value = account.id;
             username.value = account.username;
             name.value = account.name;
+            token.value = msg.result?.token;
             matrix.value = msg.result?.matrix;
             mainStore.hideAuthorizationDialog();
         }
@@ -65,5 +74,6 @@ export const useAccountStore = defineStore('account', () => {
         logout,
         allowed,
         onLoad,
+        token,
     };
 });
