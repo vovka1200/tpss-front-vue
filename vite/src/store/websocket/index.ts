@@ -53,7 +53,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
         Notify.create({
             icon: 'error',
             color: 'negative',
-            message: 'Ошибка подключения',
+            message: 'API: Ошибка подключения',
         });
     }
 
@@ -65,7 +65,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
         Notify.create({
             icon: 'restart_alt',
             color: 'warning',
-            message: `Попытка переподключения ${count}`,
+            message: `API: Попытка переподключения ${count}`,
         });
     }
 
@@ -77,7 +77,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
         Notify.create({
             icon: 'close',
             color: 'negative',
-            message: `Сервер недоступен`,
+            message: `API: Сервер недоступен`,
             timeout: 0,
         });
     }
