@@ -7,9 +7,8 @@ import {useMainStore} from "@/store";
 const accountStore = useAccountStore();
 const mainStore = useMainStore();
 
-const visible = computed(() => {
-  return mainStore.authDialogVisible;
-})
+const visible = computed(() => mainStore.authDialogVisible);
+const shaking = computed(() => mainStore.authShake ? 'shake' : '');
 
 const username = computed({
   get() {
@@ -37,7 +36,7 @@ const login = () => {
 </script>
 
 <template>
-  <q-dialog v-bind:model-value="visible" persistent>
+  <q-dialog v-bind:model-value="visible" persistent :class="shaking">
     <q-card style="min-width: 350px">
       <q-card-section>
         <div class="text-h6">Аутентификация</div>

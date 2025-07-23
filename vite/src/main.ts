@@ -8,6 +8,7 @@ import langRu from 'quasar/lang/ru'
 import '@quasar/extras/material-icons/material-icons.css'
 import '@quasar/extras/material-icons-outlined/material-icons-outlined.css'
 import './assets/main.css'
+import './assets/animations.css'
 import {useWebsocketStore} from '@/store/websocket'
 import {createPinia} from "pinia";
 
