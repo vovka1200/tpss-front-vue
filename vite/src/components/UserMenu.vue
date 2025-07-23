@@ -30,16 +30,17 @@ const password = computed({
   }
 })
 
-onMounted(() => {
-  mainStore.panel = 'Настройки пользователя';
-})
-
 const logout = () => {
   open.value = false;
   accountStore.logout();
 };
 
 const pwdVisible = ref(false);
+const passwordRetype = ref('');
+const retypePassword = ref(false);
+
+const pwdIcon = computed(() => pwdVisible.value ? 'visibility_off' : 'visibility');
+
 </script>
 
 <template>
@@ -52,11 +53,31 @@ const pwdVisible = ref(false);
         <q-card-section>
           <q-input :type="pwdVisible ? 'text' : 'password'" v-model="password" label="Пароль">
             <template v-slot:append>
-              <q-icon
-                  :name="pwdVisible ? 'visibility_off' : 'visibility'"
-                  class="cursor-pointer"
-                  @click="pwdVisible = !pwdVisible"
-              />
+              <q-btn flat dense :icon="pwdIcon" @click="pwdVisible = !pwdVisible"/>
+              <q-btn flat dense icon="save">
+                <q-tooltip>Сохранить пароль</q-tooltip>
+                <q-menu v-model="retypePassword">
+                  <q-card>
+                    <q-card-section>
+                      <q-input
+                          v-model="passwordRetype"
+                          :type="pwdVisible ? 'text' : 'password'"
+                          hint="Введите пароль повторно"
+                          dense
+                          autofocus
+                      >
+                        <template v-slot:append>
+                          <q-btn flat dense :icon="pwdIcon" @click="pwdVisible = !pwdVisible"/>
+                        </template>
+                      </q-input>
+                    </q-card-section>
+                    <q-separator/>
+                    <q-card-actions align="right">
+                      <q-btn icon="save" label="Сохранить" color="positive"/>
+                    </q-card-actions>
+                  </q-card>
+                </q-menu>
+              </q-btn>
             </template>
           </q-input>
         </q-card-section>
