@@ -39,6 +39,7 @@ const logout = () => {
   accountStore.logout();
 };
 
+const pwdVisible = ref(false);
 </script>
 
 <template>
@@ -49,7 +50,15 @@ const logout = () => {
           <q-input readonly v-model="username" v-if="username" label="Имя пользователя"/>
         </q-card-section>
         <q-card-section>
-          <q-input type="password" v-model="password" label="Пароль"/>
+          <q-input :type="pwdVisible ? 'text' : 'password'" v-model="password" label="Пароль">
+            <template v-slot:append>
+              <q-icon
+                  :name="pwdVisible ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="pwdVisible = !pwdVisible"
+              />
+            </template>
+          </q-input>
         </q-card-section>
       </q-card>
       <q-separator vertical inset class="q-mx-lg"/>
