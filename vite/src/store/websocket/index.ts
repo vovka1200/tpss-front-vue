@@ -7,12 +7,14 @@ import {useMainStore} from "@/store";
 import {useAccountStore} from "@/store/access/account";
 import {useUsersStore} from "@/store/access/users";
 import {useGroupsStore} from "@/store/access/groups";
+import {useClientsStore} from "@/store/crm/clients";
 
 export const useWebsocketStore = defineStore('websocket', () => {
     const mainStore = useMainStore();
     const accountStore = useAccountStore();
     const usersStore = useUsersStore();
     const groupsStore = useGroupsStore();
+    const clientsStore = useClientsStore();
     const isConnected = ref(false);
     const message = ref<JSONRPCResponse>(<JSONRPCResponse>{});
     const reconnectError = ref(false);
@@ -26,14 +28,6 @@ export const useWebsocketStore = defineStore('websocket', () => {
     function SOCKET_ONOPEN(event: Event) {
         app.config.globalProperties.$socket = event.currentTarget;
         isConnected.value = true;
-        heartBeatTimer.value = window.setInterval(() => {
-            const message = 'Heartbeat message';
-            isConnected &&
-            app.config.globalProperties.$socket.sendObj({
-                code: 200,
-                msg: message,
-            });
-        }, heartBeatInterval.value);
     }
 
     /**
@@ -107,14 +101,18 @@ export const useWebsocketStore = defineStore('websocket', () => {
         const error = message.value.error;
         if (error) {
             if (error.code === 401) {
-                if (!mainStore.authDialogVisible) {
-                    Notify.create({
-                        icon: 'block',
-                        color: 'negative',
-                        message: 'Доступ ограничен',
-                    });
+                if (accountStore.token != '') {
+                    accountStore.login();
+                } else {
+                    if (!mainStore.authDialogVisible) {
+                        Notify.create({
+                            icon: 'block',
+                            color: 'negative',
+                            message: 'Доступ ограничен',
+                        });
+                    }
+                    mainStore.showAuthorizationDialog();
                 }
-                mainStore.showAuthorizationDialog();
             } else {
                 Notify.create({
                     icon: 'error',
@@ -128,6 +126,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
             accountStore.onLoad(msg);
             usersStore.onLoad(msg);
             groupsStore.onLoad(msg);
+            clientsStore.onLoad(msg);
         }
     }
 
