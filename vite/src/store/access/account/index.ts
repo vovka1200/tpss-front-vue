@@ -4,6 +4,7 @@ import {ref} from "vue";
 import {JSONRPC, JSONRPCResponse} from "json-rpc-2.0";
 import {AccessMatrix, Method} from "@/models/access/maxrix";
 import {useMainStore} from "@/store";
+import app from "@/main";
 
 
 export const useAccountStore = defineStore('account', () => {
@@ -53,7 +54,9 @@ export const useAccountStore = defineStore('account', () => {
     }
 
     function logout() {
-
+        username.value = '';
+        token.value = '';
+        websocket.disconnect();
     }
 
     function allowed(objectName: String, method: Method = Method.read) {

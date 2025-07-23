@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
 import app from '@/main';
-import {Notify} from "quasar";
+import {Notify, Loading, QSpinnerGears} from "quasar";
 import {JSONRPCRequest, JSONRPCResponse} from "json-rpc-2.0";
 import {ref} from "vue";
 import {useMainStore} from "@/store";
@@ -95,6 +95,14 @@ export const useWebsocketStore = defineStore('websocket', () => {
     }
 
     /**
+     * Закрывает соединение
+     */
+    function disconnect() {
+        Loading.show({});
+        app.config.globalProperties.$socket.close();
+    }
+
+    /**
      * Действие по сообщению
      * @param {JSONRPCResponse} msg
      */
@@ -113,6 +121,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
                             message: 'API: Доступ запрещён',
                         });
                     }
+                    Loading.hide();
                     mainStore.showAuthorizationDialog();
                 }
             } else {
@@ -146,5 +155,6 @@ export const useWebsocketStore = defineStore('websocket', () => {
         SOCKET_RECONNECT_ERROR,
         SOCKET_ONMESSAGE,
         send,
+        disconnect,
     };
 });

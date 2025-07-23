@@ -2,7 +2,7 @@ import {createApp} from 'vue'
 import App from './App.vue'
 import VueNativeSock from 'vue-native-websocket-vue3';
 import router from "./router";
-import {Quasar, Notify} from 'quasar'
+import {Quasar, Notify, Loading} from 'quasar'
 import 'quasar/src/css/index.sass'
 import langRu from 'quasar/lang/ru'
 import '@quasar/extras/material-icons/material-icons.css'
@@ -28,7 +28,8 @@ app.use(VueNativeSock,
 app.use(Quasar, {
     lang: langRu,
     plugins: {
-        Notify
+        Notify,
+        Loading,
     },
     config: {
         brand: {
