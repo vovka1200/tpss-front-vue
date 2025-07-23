@@ -8,6 +8,7 @@ import {useAccountStore} from "@/store/access/account";
 import {useUsersStore} from "@/store/access/users";
 import {useGroupsStore} from "@/store/access/groups";
 import {useClientsStore} from "@/store/crm/clients";
+import {useRulesStore} from "@/store/access/rules";
 
 export const useWebsocketStore = defineStore('websocket', () => {
     const mainStore = useMainStore();
@@ -15,6 +16,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
     const usersStore = useUsersStore();
     const groupsStore = useGroupsStore();
     const clientsStore = useClientsStore();
+    const rulesStore = useRulesStore();
     const isConnected = ref(false);
     const message = ref<JSONRPCResponse>(<JSONRPCResponse>{});
     const reconnectError = ref(false);
@@ -108,7 +110,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
                         Notify.create({
                             icon: 'block',
                             color: 'negative',
-                            message: 'Доступ ограничен',
+                            message: 'API: Доступ ограничен',
                         });
                     }
                     mainStore.showAuthorizationDialog();
@@ -117,7 +119,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
                 Notify.create({
                     icon: 'error',
                     color: 'negative',
-                    message: `Ошибка ${error.code}`,
+                    message: `API: Ошибка ${error.code}`,
                     caption: error.message,
                 });
             }
@@ -127,6 +129,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
             usersStore.onLoad(msg);
             groupsStore.onLoad(msg);
             clientsStore.onLoad(msg);
+            rulesStore.onLoad(msg);
         }
     }
 
