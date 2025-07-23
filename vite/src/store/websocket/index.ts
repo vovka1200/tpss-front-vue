@@ -18,6 +18,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
     const clientsStore = useClientsStore();
     const rulesStore = useRulesStore();
     const isConnected = ref(false);
+    const reconnecting = ref(false);
     const message = ref<JSONRPCResponse>(<JSONRPCResponse>{});
     const reconnectError = ref(false);
     const heartBeatInterval = ref(50000);
@@ -30,6 +31,14 @@ export const useWebsocketStore = defineStore('websocket', () => {
     function SOCKET_ONOPEN(event: Event) {
         app.config.globalProperties.$socket = event.currentTarget;
         isConnected.value = true;
+        if (reconnecting.value) {
+            Notify.create({
+                icon: 'restart_alt',
+                color: 'positive',
+                message: `API: Подключение успешно`,
+            });
+            reconnecting.value = false;
+        }
     }
 
     /**
@@ -64,6 +73,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
      * @param {number} count
      */
     function SOCKET_RECONNECT(count: number) {
+        reconnecting.value = true;
         Notify.create({
             icon: 'restart_alt',
             color: 'warning',
