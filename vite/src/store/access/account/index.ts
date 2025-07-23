@@ -4,8 +4,6 @@ import {ref} from "vue";
 import {JSONRPC, JSONRPCResponse} from "json-rpc-2.0";
 import {AccessMatrix, Method} from "@/models/access/maxrix";
 import {useMainStore} from "@/store";
-import app from "@/main";
-
 
 export const useAccountStore = defineStore('account', () => {
     const websocket = useWebsocketStore();
@@ -56,6 +54,7 @@ export const useAccountStore = defineStore('account', () => {
     function logout() {
         username.value = '';
         token.value = '';
+        matrix.value = [];
         websocket.disconnect();
     }
 
