@@ -29,7 +29,7 @@ const panel = computed(() => {
         </q-toolbar-title>
         <q-toolbar-title>{{ panel }}</q-toolbar-title>
         <q-space/>
-        <q-btn dense flat icon="o_account_circle">
+        <q-btn dense flat icon="o_account_circle" v-if="accountStore.token!=''">
           <q-tooltip> Настройки пользователя</q-tooltip>
           <UserMenu/>
         </q-btn>
