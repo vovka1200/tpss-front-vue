@@ -14,10 +14,10 @@ import {createPinia} from "pinia";
 
 const store = createPinia();
 
-const app = createApp(App)
-app.use(store)
-app.use(router)
+const app = createApp(App);
+app.use(store);
 const useSocketStore = useWebsocketStore();
+app.use(router);
 app.use(VueNativeSock,
     import.meta.env.VITE_TPSS_API_URL, {
         store: useSocketStore,
@@ -25,7 +25,7 @@ app.use(VueNativeSock,
         reconnection: true,
         reconnectionAttempts: 12,
         reconnectionDelay: 5000,
-    })
+    });
 app.use(Quasar, {
     lang: langRu,
     plugins: {
@@ -45,7 +45,7 @@ app.use(Quasar, {
             warning: '#dc7500'
         }
     }
-})
-app.mount('#app')
+});
+app.mount('#app');
 
 export default app;

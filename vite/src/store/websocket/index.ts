@@ -23,6 +23,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
     const reconnectError = ref(false);
     const heartBeatInterval = ref(50000);
     const heartBeatTimer = ref(0);
+    const login = ref(false);
 
     /**
      * Действие на открытие соединения
@@ -121,8 +122,14 @@ export const useWebsocketStore = defineStore('websocket', () => {
         const error = message.value.error;
         if (error) {
             if (error.code === 401) {
-                if (accountStore.token != '') {
-                    accountStore.login();
+                if (localStorage.getItem('token')) {
+                    if (!login.value) {
+                        accountStore.login();
+                        login.value = true;
+                    } else {
+                        localStorage.removeItem('token');
+                        login.value = false;
+                    }
                 } else {
                     if (error.message.includes('failed')) {
                         Notify.create({
