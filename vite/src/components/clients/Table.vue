@@ -3,6 +3,7 @@
 import {computed, ref, shallowReactive} from "vue";
 import {Client} from "@/models/crm/clients";
 import {useClientsStore} from "@/store/crm/clients";
+import app from "@/main";
 
 const tableRef = ref();
 const loading = ref(false);
@@ -42,6 +43,10 @@ const onRequest = () => {
   loading.value = true;
   store.load();
 };
+
+const onRowClick = (event, row: Client) => {
+  app.config.globalProperties.$router.push(`/clients/${row.id}`);
+};
 </script>
 
 <template>
@@ -66,6 +71,7 @@ const onRequest = () => {
       :filter="filter"
       @request="onRequest"
       v-model:pagination="pagination"
+      @row-click="onRowClick"
   />
 </template>
 
