@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import Drawer from "@/components/Drawer.vue";
+
 import {RouterView} from "vue-router";
 import {computed, ref} from "vue";
 import {useMainStore} from "@/store";
 import UserMenu from "@/components/UserMenu.vue";
 import {useAccountStore} from "@/store/access/account";
+import MainMenu from "@/components/MainMenu.vue";
 
-const openDrawer = ref(true);
+const miniMenu = ref(false);
 const mainStore = useMainStore();
 const accountStore = useAccountStore();
 const panel = computed(() => {
@@ -20,7 +21,7 @@ const panel = computed(() => {
 
     <q-header elevated>
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="openDrawer=!openDrawer"/>
+        <q-btn dense flat round icon="menu" @click="miniMenu=!miniMenu"/>
         <q-toolbar-title shrink>
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-black.svg" alt="">
@@ -42,7 +43,7 @@ const panel = computed(() => {
       </q-toolbar>
     </q-header>
 
-    <Drawer :visible="openDrawer"/>
+    <MainMenu :mini="!miniMenu"/>
 
     <q-page-container>
       <router-view/>
