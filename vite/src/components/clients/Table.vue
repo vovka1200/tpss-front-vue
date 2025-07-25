@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {computed, ref, shallowReactive} from "vue";
+import {computed, ref} from "vue";
 import {Client} from "@/models/crm/clients";
 import {useClientsStore} from "@/store/crm/clients";
 import app from "@/main";
