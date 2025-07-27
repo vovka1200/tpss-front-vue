@@ -6,6 +6,7 @@ import {onMounted, ref} from 'vue';
 import {useAccountStore} from "@/store/access/account";
 import {useUsersStore} from "@/store/access/users";
 import {useGroupsStore} from "@/store/access/groups";
+import ParamsTable from '@/components/settings/params/Table.vue';
 
 const tab = ref('users');
 
@@ -35,7 +36,7 @@ onMounted(() => {
     >
       <q-tab name="users" label="Пользователи" icon="o_person" @click="usersStore.load()"/>
       <q-tab name="groups" label="Группы" icon="o_groups" @click="groupsStore.load()"/>
-      <q-tab name="variables" label="Переменные" icon="o_settings_applications"/>
+      <q-tab name="params" label="Параметры" icon="o_settings_applications"/>
     </q-tabs>
 
     <q-tab-panels v-model="tab" animated>
@@ -48,8 +49,8 @@ onMounted(() => {
         <GroupsTable/>
       </q-tab-panel>
 
-      <q-tab-panel name="variables">
-        TEST
+      <q-tab-panel name="params">
+        <ParamsTable/>
       </q-tab-panel>
 
     </q-tab-panels>

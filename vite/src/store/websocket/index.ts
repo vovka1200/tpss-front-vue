@@ -3,13 +3,14 @@ import app from '@/main';
 import {Notify, Loading} from "quasar";
 import {JSONRPC, JSONRPCRequest, JSONRPCResponse} from "json-rpc-2.0";
 import {ref} from "vue";
+import moment from "moment/moment";
 import {useMainStore} from "@/store";
 import {useAccountStore} from "@/store/access/account";
 import {useUsersStore} from "@/store/access/users";
 import {useGroupsStore} from "@/store/access/groups";
 import {useClientsStore} from "@/store/crm/clients";
 import {useRulesStore} from "@/store/access/rules";
-import moment from "moment/moment";
+import {useParamsStore} from "@/store/settings/params";
 
 export const useWebsocketStore = defineStore('websocket', () => {
     const mainStore = useMainStore();
@@ -18,6 +19,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
     const groupsStore = useGroupsStore();
     const clientsStore = useClientsStore();
     const rulesStore = useRulesStore();
+    const paramsStore = useParamsStore();
     const isConnected = ref(false);
     const reconnecting = ref(false);
     const message = ref<JSONRPCResponse>(<JSONRPCResponse>{});
@@ -168,6 +170,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
             groupsStore.onLoad(msg);
             clientsStore.onLoad(msg);
             rulesStore.onLoad(msg);
+            paramsStore.onLoad(msg);
         }
     }
 
