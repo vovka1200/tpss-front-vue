@@ -1,9 +1,10 @@
 import {defineStore} from "pinia";
 import {useWebsocketStore} from "@/store/websocket";
 import {computed, ref} from "vue";
-import {JSONRPC, JSONRPCResponse} from "json-rpc-2.0";
+import {JSONRPCResponse} from "json-rpc-2.0";
 import {AccessMatrix, Method} from "@/models/access/maxrix";
 import {useMainStore} from "@/store";
+import moment from "moment";
 
 export const useAccountStore = defineStore('account', () => {
     const websocket = useWebsocketStore();
@@ -14,20 +15,26 @@ export const useAccountStore = defineStore('account', () => {
     const name = ref('');
     const matrix = ref<AccessMatrix>([]);
 
-    function login() {
-        const tmpToken: string = localStorage.getItem('token') ?? '';
-        if (tmpToken || username.value && password.value) {
-            websocket.send({
-                jsonrpc: JSONRPC,
-                id: 1,
-                method: "access.users.user.login",
-                params: tmpToken != '' ? {
-                    token: tmpToken,
-                } : {
+    function login(): number | undefined {
+        if (username.value && password.value) {
+            return websocket.send(
+                "access.users.user.login",
+                {
                     username: username.value,
                     password: password.value,
                 },
-            });
+            );
+        }
+    }
+
+    function loginByToken(token: string): number | undefined {
+        if (token != '') {
+            return websocket.send(
+                "access.users.user.login",
+                {
+                    token: token,
+                }
+            );
         }
     }
 
@@ -37,14 +44,9 @@ export const useAccountStore = defineStore('account', () => {
             id.value = account.id;
             username.value = account.username;
             name.value = account.name;
-            localStorage.setItem('token', msg.result?.token);
+            websocket.setToken(msg.result?.token);
             matrix.value = msg.result?.matrix;
             mainStore.hideAuthorizationDialog();
-            websocket.send({
-                jsonrpc: JSONRPC,
-                id: 1,
-                method: "version",
-            });
         }
         if (msg.result?.version) {
             mainStore.apiVersion = msg.result?.version;
@@ -53,8 +55,9 @@ export const useAccountStore = defineStore('account', () => {
 
     function logout() {
         username.value = '';
+        password.value = '';
         matrix.value = [];
-        localStorage.removeItem('token');
+        websocket.resetToken();
         websocket.disconnect();
     }
 
@@ -76,5 +79,6 @@ export const useAccountStore = defineStore('account', () => {
         logout,
         allowed,
         onLoad,
+        loginByToken,
     };
 });

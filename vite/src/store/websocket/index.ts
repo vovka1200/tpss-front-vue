@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import app from '@/main';
-import {Notify, Loading, QSpinnerGears} from "quasar";
-import {JSONRPCRequest, JSONRPCResponse} from "json-rpc-2.0";
+import {Notify, Loading} from "quasar";
+import {JSONRPC, JSONRPCRequest, JSONRPCResponse} from "json-rpc-2.0";
 import {ref} from "vue";
 import {useMainStore} from "@/store";
 import {useAccountStore} from "@/store/access/account";
@@ -9,6 +9,7 @@ import {useUsersStore} from "@/store/access/users";
 import {useGroupsStore} from "@/store/access/groups";
 import {useClientsStore} from "@/store/crm/clients";
 import {useRulesStore} from "@/store/access/rules";
+import moment from "moment/moment";
 
 export const useWebsocketStore = defineStore('websocket', () => {
     const mainStore = useMainStore();
@@ -23,15 +24,18 @@ export const useWebsocketStore = defineStore('websocket', () => {
     const reconnectError = ref(false);
     const heartBeatInterval = ref(50000);
     const heartBeatTimer = ref(0);
-    const login = ref(false);
+    const requestId = ref(1);
+    const authorizeId = ref(0);
 
     /**
      * Действие на открытие соединения
      * @param {Event} event
      */
     function SOCKET_ONOPEN(event: Event) {
+        Loading.hide('websocket');
         app.config.globalProperties.$socket = event.currentTarget;
         isConnected.value = true;
+        send('version');
         if (reconnecting.value) {
             Notify.create({
                 icon: 'restart_alt',
@@ -96,12 +100,22 @@ export const useWebsocketStore = defineStore('websocket', () => {
     }
 
     /**
-     * Посылает запрос
-     * @param {JSONRPCRequest} req
+     * Вызывает метод с параметрами
+     * @param {string} method
+     * @param {any} params
+     * @returns number | undefined
      */
-    function send(req: JSONRPCRequest) {
+    function send(method: string, params?: any): number | undefined {
         if (isConnected.value) {
+            const id = requestId.value++;
+            const req: JSONRPCRequest = {
+                jsonrpc: JSONRPC,
+                id: id,
+                method: method,
+                params: params || {},
+            };
             app.config.globalProperties.$socket.sendObj(req);
+            return id;
         }
     }
 
@@ -109,7 +123,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
      * Закрывает соединение
      */
     function disconnect() {
-        Loading.show({});
+        Loading.show({group: 'websocket'});
         app.config.globalProperties.$socket.close();
     }
 
@@ -121,36 +135,33 @@ export const useWebsocketStore = defineStore('websocket', () => {
         message.value = msg;
         const error = message.value.error;
         if (error) {
-            if (error.code === 401) {
-                if (localStorage.getItem('token')) {
-                    if (!login.value) {
-                        accountStore.login();
-                        login.value = true;
+            switch (error.code) {
+                case 401:
+                    const token = getToken();
+                    if (message.value.id === null) {
+                        if (token != '') {
+                            resetToken();
+                            accountStore.loginByToken(token);
+                        } else {
+                            mainStore.showAuthorizationDialog();
+                        }
                     } else {
-                        localStorage.removeItem('token');
-                        login.value = false;
+                        if (token != '') {
+                            resetToken();
+                            mainStore.showAuthorizationDialog();
+                        } else {
+                            mainStore.shakeAuthorizationDialog();
+                        }
                     }
-                } else {
-                    if (error.message.includes('failed')) {
-                        Notify.create({
-                            icon: 'block',
-                            color: 'negative',
-                            message: 'API: Доступ запрещён',
-                        });
-                        mainStore.shakeAuthorizationDialog();
-                    }
-                    Loading.hide();
-                    mainStore.showAuthorizationDialog();
-                }
-            } else {
-                Notify.create({
-                    icon: 'error',
-                    color: 'negative',
-                    message: `API: Ошибка ${error.code}`,
-                    caption: error.message,
-                });
+                    break;
+                default:
+                    Notify.create({
+                        icon: 'error',
+                        color: 'negative',
+                        message: `API: Ошибка ${error.code}`,
+                        caption: error.message,
+                    });
             }
-            return;
         } else {
             accountStore.onLoad(msg);
             usersStore.onLoad(msg);
@@ -158,6 +169,26 @@ export const useWebsocketStore = defineStore('websocket', () => {
             clientsStore.onLoad(msg);
             rulesStore.onLoad(msg);
         }
+    }
+
+
+    function getToken() {
+        const until = localStorage.getItem('token_live_until');
+        if (!until || moment().isAfter(until)) {
+            resetToken();
+            return '';
+        }
+        return localStorage.getItem('token') ?? '';
+    }
+
+    function setToken(newToken: string) {
+        localStorage.setItem('token', newToken);
+        localStorage.setItem('token_live_until', moment().add(1, 'day').toISOString());
+    }
+
+    function resetToken() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('token_live_until');
     }
 
     return {
@@ -174,5 +205,8 @@ export const useWebsocketStore = defineStore('websocket', () => {
         SOCKET_ONMESSAGE,
         send,
         disconnect,
+        authorizeId,
+        setToken,
+        resetToken,
     };
 });

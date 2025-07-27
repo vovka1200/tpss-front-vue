@@ -26,6 +26,7 @@
     "vue-native-websocket-vue3": "^3.1.8",
     "pinia": "^3.0.3",
     "sass-embedded": "^1.89.2",
-    "json-rpc-2.0": "^1.7.1"
+    "json-rpc-2.0": "^1.7.1",
+    "moment": "^2.30.1"
   }
 }
