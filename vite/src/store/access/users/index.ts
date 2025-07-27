@@ -11,14 +11,11 @@ export const useUsersStore = defineStore('users', () => {
     const list = ref<User[]>([]);
 
     function load() {
-        websocket.send({
-            jsonrpc: JSONRPC,
-            id: 1,
-            method: "access.users.list",
-            params: {
+        websocket.send(
+            "access.users.list",
+            {
                 filter: filter.value,
-            }
-        });
+            });
     }
 
     function onLoad(msg: JSONRPCResponse) {

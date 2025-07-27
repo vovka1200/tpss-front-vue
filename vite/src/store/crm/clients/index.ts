@@ -11,14 +11,11 @@ export const useClientsStore = defineStore('clients', () => {
     const list = ref<Client[]>([]);
 
     function load() {
-        websocket.send({
-            jsonrpc: JSONRPC,
-            id: 1,
-            method: "crm.clients.list",
-            params: {
+        websocket.send(
+            "crm.clients.list",
+            {
                 filter: filter.value,
-            }
-        });
+            });
     }
 
     function onLoad(msg: JSONRPCResponse) {

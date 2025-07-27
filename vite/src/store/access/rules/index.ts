@@ -10,14 +10,12 @@ export const useRulesStore = defineStore('rules', () => {
     const list = ref<AccessMatrix>([]);
 
     function load(id: string | undefined) {
-        websocket.send({
-            jsonrpc: JSONRPC,
-            id: 1,
-            method: "access.groups.group.rules.list",
-            params: {
+        websocket.send(
+            "access.groups.group.rules.list",
+            {
                 group_id: id,
             }
-        });
+        );
     }
 
     function onLoad(msg: JSONRPCResponse) {

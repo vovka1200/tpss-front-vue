@@ -11,14 +11,12 @@ export const useGroupsStore = defineStore('groups', () => {
     const list = ref<Group[]>([]);
 
     function load() {
-        websocket.send({
-            jsonrpc: JSONRPC,
-            id: 1,
-            method: "access.groups.list",
-            params: {
+        websocket.send(
+            "access.groups.list",
+            {
                 filter: filter.value,
             }
-        });
+        );
     }
 
     function onLoad(msg: JSONRPCResponse) {
