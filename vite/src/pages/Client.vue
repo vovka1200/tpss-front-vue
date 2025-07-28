@@ -9,7 +9,6 @@ const route = useRoute();
 const id = ref(route.params.id);
 
 const mainStore = useMainStore();
-mainStore.panel = 'Клиент';
 
 const options = ref([
   'Активен', 'Удалён'

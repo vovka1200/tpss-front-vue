@@ -5,9 +5,6 @@ import {onMounted} from "vue";
 
 const mainStore = useMainStore();
 
-onMounted(() => {
-  mainStore.panel = 'О программе';
-});
 </script>
 
 <template>

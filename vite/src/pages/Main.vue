@@ -6,13 +6,11 @@ import {useMainStore} from "@/store";
 import UserMenu from "@/components/UserMenu.vue";
 import {useAccountStore} from "@/store/access/account";
 import MainMenu from "@/components/MainMenu.vue";
+import Route from "@/components/Route.vue";
 
 const miniMenu = ref(false);
 const mainStore = useMainStore();
 const accountStore = useAccountStore();
-const panel = computed(() => {
-  return mainStore.panel
-});
 
 </script>
 
@@ -28,7 +26,9 @@ const panel = computed(() => {
           </q-avatar>
           T.P.S.S.
         </q-toolbar-title>
-        <q-toolbar-title>{{ panel }}</q-toolbar-title>
+        <q-toolbar-title>
+          <Route/>
+        </q-toolbar-title>
         <q-space/>
         <q-btn dense flat icon="o_account_circle" v-if="accountStore.token!=''">
           <q-tooltip> Настройки пользователя</q-tooltip>

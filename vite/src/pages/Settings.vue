@@ -13,7 +13,6 @@ const usersStore = useUsersStore();
 const groupsStore = useGroupsStore();
 
 onMounted(() => {
-  mainStore.panel = 'Панель управления';
   if (accountStore.allowed('settings')) {
     usersStore.load();
   }

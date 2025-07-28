@@ -5,7 +5,6 @@ import {ref} from "vue";
 export const useMainStore = defineStore('main', () => {
     const authDialogVisible = ref(false);
     const authShake = ref(false);
-    const panel = ref('');
     const apiVersion = ref('');
 
     function showAuthorizationDialog() {
@@ -25,7 +24,6 @@ export const useMainStore = defineStore('main', () => {
 
     return {
         authDialogVisible,
-        panel,
         showAuthorizationDialog,
         hideAuthorizationDialog,
         apiVersion,

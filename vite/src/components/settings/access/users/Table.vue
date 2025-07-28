@@ -1,9 +1,9 @@
 <script setup lang="ts">
-
 import {computed, ref, shallowReactive} from "vue";
 import {User} from "@/models/access/users";
-import Card from "@/components/settings/access/users/Card.vue";
 import {useUsersStore} from "@/store/access/users";
+import app from "@/main";
+import {useRoute} from "vue-router";
 
 const tableRef = ref();
 const rowData = shallowReactive(new User());
@@ -63,11 +63,15 @@ const onRequest = () => {
   store.load();
 };
 
+const onClick = (evt, row) => {
+  app.config.globalProperties.$router.push({name: 'user profile', params: {id: <User>row.id}});
+};
+
 </script>
 
 <template>
   <q-toolbar>
-    <q-btn flat round dense icon="o_add" @click="card=true">
+    <q-btn flat round dense icon="o_add" @click="onClick">
       <q-tooltip>Добавить пользователя</q-tooltip>
     </q-btn>
     <q-space/>
@@ -87,9 +91,8 @@ const onRequest = () => {
       :filter="filter"
       @request="onRequest"
       v-model:pagination="pagination"
-      @row-click="(env,row)=>{rowData=row;card=true}"
+      @row-click="onClick"
   />
-  <Card v-model="card" :data="rowData"/>
 </template>
 
 <style scoped>

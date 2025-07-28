@@ -6,10 +6,6 @@ import Table from '@/components/clients/Table.vue';
 
 const mainStore = useMainStore();
 
-onMounted(() => {
-  mainStore.panel = 'Клиенты';
-});
-
 </script>
 
 <template>
