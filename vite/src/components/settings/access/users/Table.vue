@@ -63,7 +63,7 @@ const onRequest = () => {
 };
 
 const onClick = (evt, row) => {
-  app.config.globalProperties.$router.push({name: 'user profile', params: {id: <User>row.id}});
+  app.config.globalProperties.$router.push({name: 'Пользователь', params: {id: <User>row.id}});
 };
 
 </script>
