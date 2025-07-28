@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {RouterView} from "vue-router";
-import {computed, ref} from "vue";
+import {ref} from "vue";
 import {useMainStore} from "@/store";
 import UserMenu from "@/components/UserMenu.vue";
 import {useAccountStore} from "@/store/access/account";

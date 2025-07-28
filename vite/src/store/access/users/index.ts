@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
 import {User} from "@/models/access/users";
-import {JSONRPC, JSONRPCResponse} from "json-rpc-2.0";
+import {JSONRPCResponse} from "json-rpc-2.0";
 import {useWebsocketStore} from "@/store/websocket";
 
 

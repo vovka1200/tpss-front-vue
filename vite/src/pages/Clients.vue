@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import {onMounted} from "vue";
 import {useMainStore} from "@/store";
 import Table from '@/components/clients/Table.vue';
 

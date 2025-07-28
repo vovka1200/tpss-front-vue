@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import {JSONRPC, JSONRPCResponse} from "json-rpc-2.0";
+import {JSONRPCResponse} from "json-rpc-2.0";
 import {useWebsocketStore} from "@/store/websocket";
 import {AccessMatrix} from "@/models/access/maxrix";
 

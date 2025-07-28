@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {useAccountStore} from "@/store/access/account";
-import {computed, onMounted, ref} from "vue";
+import {computed, ref} from "vue";
 import {useMainStore} from "@/store";
 
 const open = ref(false);

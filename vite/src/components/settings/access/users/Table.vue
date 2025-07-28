@@ -3,7 +3,6 @@ import {computed, ref, shallowReactive} from "vue";
 import {User} from "@/models/access/users";
 import {useUsersStore} from "@/store/access/users";
 import app from "@/main";
-import {useRoute} from "vue-router";
 
 const tableRef = ref();
 const rowData = shallowReactive(new User());

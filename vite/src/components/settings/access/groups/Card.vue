@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {PropType, ref} from "vue";
+import {PropType} from "vue";
 import {Group} from "@/models/access/groups";
 import Rules from "@/components/settings/access/groups/Rules.vue";
 
