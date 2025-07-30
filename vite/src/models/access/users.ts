@@ -1,13 +1,12 @@
-export class User {
-    id: string
-    created: string
+import {Entity} from "@/models/entity";
+
+export class User extends Entity {
     name: string
     username: string
     groups: string[]
 
     constructor() {
-        this.id = '';
-        this.created = '';
+        super();
         this.name = '';
         this.username = '';
         this.groups = [];
