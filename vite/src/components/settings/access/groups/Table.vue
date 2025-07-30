@@ -63,7 +63,7 @@ const onRequest = () => {
       <q-tooltip>Добавить группу</q-tooltip>
     </q-btn>
     <q-space/>
-    <q-input flat dense debounce="500" v-model="filter" placeholder="Поиск">
+    <q-input flat dense debounce="500" v-model="filter" placeholder="Поиск" type="search">
       <template v-slot:append>
         <q-icon name="o_search"/>
       </template>

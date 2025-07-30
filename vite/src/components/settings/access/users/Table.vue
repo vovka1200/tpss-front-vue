@@ -62,8 +62,8 @@ const onRequest = () => {
   store.load();
 };
 
-const onClick = (evt, row) => {
-  app.config.globalProperties.$router.push({name: 'Пользователь', params: {id: <User>row.id}});
+const onClick = (evt: Event, row: User) => {
+  app.config.globalProperties.$router.push({name: 'Пользователь', params: {id: row.id}});
 };
 
 </script>
@@ -74,7 +74,7 @@ const onClick = (evt, row) => {
       <q-tooltip>Добавить пользователя</q-tooltip>
     </q-btn>
     <q-space/>
-    <q-input flat dense debounce="500" v-model="filter" placeholder="Поиск">
+    <q-input flat dense debounce="500" v-model="filter" placeholder="Поиск" type="search">
       <template v-slot:append>
         <q-icon name="o_search"/>
       </template>
