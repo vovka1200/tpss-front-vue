@@ -6,7 +6,7 @@ import {useMainStore} from "@/store";
 import UserMenu from "@/components/UserMenu.vue";
 import {useAccountStore} from "@/store/access/account";
 import MainMenu from "@/components/MainMenu.vue";
-import Route from "@/components/Route.vue";
+import Navigator from "@/components/Navigator.vue";
 
 const miniMenu = ref(false);
 const mainStore = useMainStore();
@@ -27,7 +27,7 @@ const accountStore = useAccountStore();
           T.P.S.S.
         </q-toolbar-title>
         <q-toolbar-title>
-          <Route/>
+          <Navigator/>
         </q-toolbar-title>
         <q-space/>
         <q-btn dense flat icon="o_account_circle" v-if="accountStore.token!=''">
