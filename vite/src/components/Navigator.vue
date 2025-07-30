@@ -38,7 +38,7 @@ const includes = (s: string | string[]) => {
     />
     <q-breadcrumbs-el
         label="Пользователи"
-        icon="o_person"
+        icon="o_groups"
         to="/settings/users"
         v-if="includes('users')"
     />
