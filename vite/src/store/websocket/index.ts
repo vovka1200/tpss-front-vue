@@ -27,7 +27,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
     const heartBeatInterval = ref(50000);
     const heartBeatTimer = ref(0);
     const requestId = ref(1);
-    const authorizeId = ref(0);
+    const authorized = ref(false);
 
     /**
      * Действие на открытие соединения
@@ -208,7 +208,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
         SOCKET_ONMESSAGE,
         send,
         disconnect,
-        authorizeId,
+        authorized,
         setToken,
         resetToken,
     };

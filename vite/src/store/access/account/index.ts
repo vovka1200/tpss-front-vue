@@ -44,6 +44,7 @@ export const useAccountStore = defineStore('account', () => {
             username.value = account.username;
             name.value = account.name;
             websocket.setToken(msg.result?.token);
+            websocket.authorized = true;
             matrix.value = msg.result?.matrix;
             mainStore.hideAuthorizationDialog();
         }
@@ -56,6 +57,7 @@ export const useAccountStore = defineStore('account', () => {
         username.value = '';
         password.value = '';
         matrix.value = [];
+        websocket.authorized = false;
         websocket.resetToken();
         websocket.disconnect();
     }
