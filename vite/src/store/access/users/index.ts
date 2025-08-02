@@ -11,7 +11,7 @@ export const useUsersStore = defineStore('users', () => {
     const list = ref<User[]>([]);
     const loading = ref(false);
 
-    const user = computed(() => (id: string) => list.value.find(u => u.id === id));
+    const get = computed(() => (id: string) => list.value.find(u => u.id === id));
 
     function load(id: string | string[] | undefined) {
         if (loading.value === false) {
@@ -21,7 +21,8 @@ export const useUsersStore = defineStore('users', () => {
                 {
                     id: id || null,
                     filter: filter.value,
-                });
+                }
+            );
         }
     }
 
@@ -37,6 +38,6 @@ export const useUsersStore = defineStore('users', () => {
         list,
         load,
         onLoad,
-        user,
+        get,
     };
 });
