@@ -1,59 +1,31 @@
-export class Param {
-    name: string
-    type: string
+import {Entity} from "@/models/entity";
 
-    constructor() {
-        this.name = '';
-        this.type = '';
-    }
+export class Param extends Entity {
+    type: string = ''
 }
 
 export class ParamString extends Param {
-    value: string
-    default: string
-
-    constructor() {
-        super();
-        this.default = '';
-        this.value = this.default;
-    }
+    value: string = ''
+    default: string = ''
 }
 
 export class ParamNumber extends Param {
-    value: number
-    default: number
-
-    constructor() {
-        super();
-        this.default = 0;
-        this.value = this.default;
-    }
+    value: number = 0
+    default: number = 0
 }
 
 export class ParamBoolean extends Param {
-    value: boolean
-    default: boolean
-
-    constructor() {
-        super();
-        this.default = false;
-        this.value = this.default;
-    }
+    value: boolean = false
+    default: boolean = false
 }
 
 export class ParamSelect extends Param {
     value: {
         id: string
         value: string
-    }
+    } = {id: '', value: ''}
     default: {
         id: string
         value: string
-    }
-
-    constructor() {
-        super();
-        this.default = {id: '', value: ''};
-        this.value = this.default;
-    }
+    } = {id: '', value: ''}
 }

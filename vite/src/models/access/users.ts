@@ -1,14 +1,12 @@
-import {Entity} from "@/models/entity";
+import {Entity, Status} from "@/models/entity";
 
 export class User extends Entity {
-    name: string
-    username: string
-    groups: string[]
+    username: string = ''
+    password: string = ''
+    groups: string[] = []
 
-    constructor() {
-        super();
-        this.name = '';
-        this.username = '';
-        this.groups = [];
-    }
+}
+
+export class UserStatus extends Status {
+
 }

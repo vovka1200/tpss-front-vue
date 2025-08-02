@@ -1,11 +1,4 @@
-export class Client {
-    id: string
-    created: string
-    name: string
+import {Entity} from "@/models/entity";
 
-    constructor() {
-        this.id = '';
-        this.created = '';
-        this.name = '';
-    }
+export class Client extends Entity {
 }
