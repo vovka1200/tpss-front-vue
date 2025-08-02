@@ -11,13 +11,16 @@ defineProps({
     <div class="cols">
       <div class="q-pa-sm">
         <slot name="card"/>
+        <div class="q-mt-sm">
+          <slot name="bottom"/>
+        </div>
       </div>
       <q-drawer show-if-above side="right" bordered>
         <div class="absolute-top bg-accent q-pa-sm base-drawer-head">
           <slot name="drawer_head"/>
         </div>
         <q-scroll-area class="text-dark base-drawer-scroll">
-          <q-list>
+          <q-list class="q-px-sm">
             <slot name="drawer_list"/>
           </q-list>
         </q-scroll-area>
