@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {useWebsocketStore} from "@/store/websocket";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {JSONRPCResponse} from "json-rpc-2.0";
 import {AccessMatrix, Method} from "@/models/access/maxrix";
 import {useMainStore} from "@/store";
@@ -12,7 +12,7 @@ export const useAccountStore = defineStore('account', () => {
     const username = ref('');
     const password = ref('');
     const name = ref('');
-    const matrix = ref<AccessMatrix>([]);
+    const accessMatrix = ref<AccessMatrix>([]);
 
     function login(): number | undefined {
         if (username.value && password.value) {
@@ -45,7 +45,7 @@ export const useAccountStore = defineStore('account', () => {
             name.value = account.name;
             websocket.setToken(msg.result?.token);
             websocket.authorized = true;
-            matrix.value = msg.result?.matrix;
+            accessMatrix.value = msg.result?.matrix;
             mainStore.hideAuthorizationDialog();
         }
         if (msg.result?.version) {
@@ -56,20 +56,20 @@ export const useAccountStore = defineStore('account', () => {
     function logout() {
         username.value = '';
         password.value = '';
-        matrix.value = [];
+        accessMatrix.value = [];
         websocket.authorized = false;
         websocket.resetToken();
         websocket.disconnect();
     }
 
-    function allowed(objectName: String, method: Method = Method.read) {
-        if (matrix.value.length > 0) {
-            return matrix.value
-                .findIndex(r => r.object === objectName && r.access?.includes(method)) > -1;
+    const allowed = computed(() => (objName: String, method: Method = Method.read) => {
+        if (accessMatrix.value.length > 0) {
+            return accessMatrix.value
+                .findIndex(r => r.object === objName && r.access?.includes(method)) > -1;
         } else {
             return false;
         }
-    }
+    });
 
     return {
         id,
