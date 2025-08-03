@@ -4,6 +4,7 @@ import {computed, ref} from "vue";
 import {JSONRPCResponse} from "json-rpc-2.0";
 import {AccessMatrix, Method} from "@/models/access/maxrix";
 import {useMainStore} from "@/store";
+import {Notify} from "quasar";
 
 export const useAccountStore = defineStore('account', () => {
     const websocket = useWebsocketStore();
@@ -22,6 +23,7 @@ export const useAccountStore = defineStore('account', () => {
                     username: username.value,
                     password: password.value,
                 },
+                onLogin,
             );
         }
     }
@@ -32,12 +34,13 @@ export const useAccountStore = defineStore('account', () => {
                 "access.users.user.login",
                 {
                     token: token,
-                }
+                },
+                onLogin,
             );
         }
     }
 
-    function onLoad(msg: JSONRPCResponse) {
+    function onLogin(msg: JSONRPCResponse): boolean {
         if (msg.result?.account) {
             const account = msg.result?.account;
             id.value = account.id;
@@ -45,11 +48,22 @@ export const useAccountStore = defineStore('account', () => {
             name.value = account.name;
             websocket.setToken(msg.result?.token);
             websocket.authorized = true;
-            accessMatrix.value = msg.result?.matrix;
             mainStore.hideAuthorizationDialog();
+            websocket.send('access.matrix');
+        } else if (msg.error) {
+            Notify.create({
+                icon: 'error',
+                color: 'negative',
+                message: `API: Ошибка авторизации ${msg.error.code}`,
+                caption: msg.error.message,
+            });
         }
-        if (msg.result?.version) {
-            mainStore.apiVersion = msg.result?.version;
+        return true;
+    }
+
+    function onLoad(msg: JSONRPCResponse) {
+        if (msg.result?.matrix) {
+            accessMatrix.value = msg.result?.matrix;
         }
     }
 
@@ -79,7 +93,7 @@ export const useAccountStore = defineStore('account', () => {
         login,
         logout,
         allowed,
-        onLoad,
         loginByToken,
+        onLoad,
     };
 });

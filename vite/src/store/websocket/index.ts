@@ -12,6 +12,8 @@ import {useClientsStore} from "@/store/crm/clients";
 import {useRulesStore} from "@/store/access/rules";
 import {useParamsStore} from "@/store/settings/params";
 
+type onMessage = (msg: JSONRPCResponse) => boolean;
+
 export const useWebsocketStore = defineStore('websocket', () => {
     const mainStore = useMainStore();
     const accountStore = useAccountStore();
@@ -28,6 +30,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
     const heartBeatTimer = ref(0);
     const requestId = ref(1);
     const authorized = ref(false);
+    const onLoadCallBacks = new Map<number, onMessage>();
 
     /**
      * Действие на открытие соединения
@@ -105,9 +108,10 @@ export const useWebsocketStore = defineStore('websocket', () => {
      * Вызывает метод с параметрами
      * @param {string} method
      * @param {any} params
+     * @param {onMessage} onLoad
      * @returns number | undefined
      */
-    function send(method: string, params?: any): number | undefined {
+    function send(method: string, params?: any, onLoad?: onMessage): number | undefined {
         if (isConnected.value) {
             const id = requestId.value++;
             const req: JSONRPCRequest = {
@@ -116,6 +120,9 @@ export const useWebsocketStore = defineStore('websocket', () => {
                 method: method,
                 params: params || {},
             };
+            if (typeof onLoad === 'function') {
+                onLoadCallBacks.set(id, onLoad);
+            }
             app.config.globalProperties.$socket.sendObj(req);
             return id;
         }
@@ -135,12 +142,19 @@ export const useWebsocketStore = defineStore('websocket', () => {
      */
     function SOCKET_ONMESSAGE(msg: JSONRPCResponse) {
         message.value = msg;
-        const error = message.value.error;
+        if (msg.id && onLoadCallBacks.has(<number>(msg.id))) {
+            const exit = onLoadCallBacks.get(<number>(msg.id))?.call(msg, msg);
+            onLoadCallBacks.delete(<number>msg.id)
+            if (exit) {
+                return;
+            }
+        }
+        const error = msg.error;
         if (error) {
             switch (error.code) {
                 case 401:
                     const token = getToken();
-                    if (message.value.id === null) {
+                    if (msg.id === null) {
                         if (token != '') {
                             resetToken();
                             accountStore.loginByToken(token);
@@ -165,6 +179,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
                     });
             }
         } else {
+            mainStore.onLoad(msg);
             accountStore.onLoad(msg);
             usersStore.onLoad(msg);
             groupsStore.onLoad(msg);
@@ -196,7 +211,6 @@ export const useWebsocketStore = defineStore('websocket', () => {
 
     return {
         isConnected,
-        message,
         reconnectError,
         heartBeatInterval,
         heartBeatTimer,
