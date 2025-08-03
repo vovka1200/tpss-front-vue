@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
+import {JSONRPCResponse} from "json-rpc-2.0";
 
 
 export const useMainStore = defineStore('main', () => {
@@ -22,6 +23,12 @@ export const useMainStore = defineStore('main', () => {
         }, 1000);
     }
 
+    function onLoad(msg: JSONRPCResponse) {
+        if (msg.result?.version) {
+            apiVersion.value = msg.result?.version;
+        }
+    }
+
     return {
         authDialogVisible,
         showAuthorizationDialog,
@@ -29,5 +36,6 @@ export const useMainStore = defineStore('main', () => {
         apiVersion,
         authShake,
         shakeAuthorizationDialog,
+        onLoad,
     };
 });
