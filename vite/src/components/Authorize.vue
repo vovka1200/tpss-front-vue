@@ -28,6 +28,8 @@ const password = computed({
   }
 })
 
+const disabled = computed(() => !password.value || !username.value);
+
 const login = () => {
   mainStore.showAuthorizationDialog();
   accountStore.login();
@@ -51,7 +53,13 @@ const login = () => {
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat class="bg-accent" label="Войти" @click="login"/>
+        <q-btn flat
+               :disable="disabled"
+               class="bg-accent"
+               label="Войти"
+               icon="login"
+               @click="login"
+        />
       </q-card-actions>
 
     </q-card>
