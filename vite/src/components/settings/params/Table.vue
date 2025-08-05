@@ -1,13 +1,12 @@
 <script setup lang="ts">
-
-import {computed, ref, shallowReactive} from "vue";
+import {computed, ref, shallowReactive, toRefs} from "vue";
 import {Param} from "@/models/params";
 import {useParamsStore} from "@/store/settings/params";
+import Card from "@/components/settings/params/Card.vue";
+import {storeToRefs} from "pinia";
 
 const tableRef = ref();
-const card = ref(false);
-const rowData = shallowReactive(new Param());
-const loading = ref(false);
+const card = ref();
 const columns = [
   {
     name: 'name',
@@ -44,23 +43,13 @@ const pagination = ref({
 });
 
 const store = useParamsStore();
-const rows = computed(() => {
-  loading.value = false;
-  return store.list;
-});
+const {list, loading, filter, item} = storeToRefs(store);
 
-const filter = computed({
-  get() {
-    return store.filter;
-  },
-  set(value) {
-    store.filter = value;
-  }
-})
+const onRequest = () => useParamsStore().load();
 
-const onRequest = () => {
-  loading.value = true;
-  store.load();
+const onRowClick = (env, row) => {
+  item.value = row;
+  card.value.show();
 };
 
 </script>
@@ -81,14 +70,15 @@ const onRequest = () => {
       dense flat
       ref="tableRef"
       row-key="id"
-      :rows="rows"
+      :rows="list"
       :columns="columns"
       :loading="loading"
       :filter="filter"
       @request="onRequest"
       v-model:pagination="pagination"
-      @row-click="(env,row)=>{rowData=row;card=true}"
+      @row-click="onRowClick"
   />
+  <Card ref="card"/>
 </template>
 
 <style scoped>
