@@ -50,13 +50,23 @@ export const useAccountStore = defineStore('account', () => {
             websocket.authorized = true;
             mainStore.hideAuthorizationDialog();
             websocket.send('access.matrix');
-        } else if (msg.error) {
             Notify.create({
-                icon: 'error',
-                color: 'negative',
-                message: `API: Ошибка авторизации ${msg.error.code}`,
-                caption: msg.error.message,
+                icon: 'how_to_reg',
+                color: 'positive',
+                message: `Успешная аутентификация!`,
+                caption: account.name,
             });
+        } else if (msg.error) {
+            if (msg.error.code === 401) {
+                mainStore.authShake = true;
+            } else {
+                Notify.create({
+                    icon: 'error',
+                    color: 'negative',
+                    message: `API: Ошибка авторизации ${msg.error.code}`,
+                    caption: msg.error.message,
+                });
+            }
         }
         return true;
     }
