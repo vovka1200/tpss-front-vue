@@ -5,7 +5,7 @@ import {useUsersStore} from "@/store/access/users";
 import app from "@/main";
 
 const tableRef = ref();
-const rowData = shallowReactive(new User());
+const rowData = shallowReactive<User>(<User>{});
 const card = ref(false);
 const loading = ref(false);
 const columns = [

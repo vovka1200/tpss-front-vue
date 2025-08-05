@@ -7,7 +7,7 @@ import {useGroupsStore} from "@/store/access/groups";
 
 const tableRef = ref();
 const card = ref(false);
-const rowData = shallowReactive(new Group());
+const rowData = shallowReactive<Group>(<Group>{});
 const loading = ref(false);
 const columns = [
   {
