@@ -1,4 +1,3 @@
 import {Entity} from "@/models/entity";
 
-export class Client extends Entity {
-}
+export type Client = Entity & {}
