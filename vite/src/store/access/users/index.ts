@@ -9,11 +9,12 @@ export const useUsersStore = defineStore('users', () => {
     const websocket = useWebsocketStore();
     const filter = ref('');
     const list = ref<User[]>([]);
+    const item = ref<User>(<User>{});
     const loading = ref(false);
 
     const get = computed(() => (id: string) => list.value.find(u => u.id === id));
 
-    function load(id: string | string[] | undefined) {
+    function load(id?: string | string[] | undefined) {
         if (loading.value === false) {
             loading.value = true;
             websocket.send(
@@ -29,6 +30,7 @@ export const useUsersStore = defineStore('users', () => {
     function onLoad(msg: JSONRPCResponse) {
         if (msg.result?.users) {
             list.value = msg.result?.users;
+            item.value = list.value[0];
             loading.value = false;
         }
     }
@@ -36,6 +38,7 @@ export const useUsersStore = defineStore('users', () => {
     return {
         filter,
         list,
+        item,
         load,
         onLoad,
         get,
