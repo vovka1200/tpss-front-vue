@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref, shallowReactive, toRefs} from "vue";
+import {ref} from "vue";
 import {Param} from "@/models/params";
 import {useParamsStore} from "@/store/settings/params";
 import Card from "@/components/settings/params/Card.vue";
