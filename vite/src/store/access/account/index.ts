@@ -47,7 +47,6 @@ export const useAccountStore = defineStore('account', () => {
             username.value = account.username;
             name.value = account.name;
             websocket.setToken(msg.result?.token);
-            websocket.authorized = true;
             mainStore.hideAuthorizationDialog();
             websocket.send('access.matrix');
             Notify.create({
@@ -74,6 +73,7 @@ export const useAccountStore = defineStore('account', () => {
     function onLoad(msg: JSONRPCResponse) {
         if (msg.result?.matrix) {
             accessMatrix.value = msg.result?.matrix;
+            websocket.authorized = true;
         }
     }
 
