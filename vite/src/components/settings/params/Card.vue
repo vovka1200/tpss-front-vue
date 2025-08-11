@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Ref, ref} from "vue";
+import {ref} from "vue";
 import {useParamsStore} from "@/store/settings/params";
 import {storeToRefs} from "pinia";
 import {useCloned} from '@vueuse/core'
@@ -29,7 +29,7 @@ const save = () => {
 
 <template>
   <q-dialog ref="dialog">
-    <q-card>
+    <q-card style="width:50vw">
       <q-toolbar>
         <q-toolbar-title>Редактирование параметра</q-toolbar-title>
         <q-space/>
@@ -38,21 +38,21 @@ const save = () => {
       <q-separator/>
 
       <q-card-section>
-        <q-item>
-          <q-input
-              class="fit"
-              v-model="cloned.name"
-              label="Название"
-          />
-        </q-item>
-        <q-item>
-          <q-select
-              class="fit"
-              label="Тип"
-              v-model="cloned.type"
-              :options="types"
-          />
-        </q-item>
+        <div class="row">
+          <div class="col-9">
+            <q-input
+                v-model="cloned.name"
+                label="Название"
+            />
+          </div>
+          <div class="col-2 offset-1">
+            <q-select
+                label="Тип"
+                v-model="cloned.type"
+                :options="types"
+            />
+          </div>
+        </div>
       </q-card-section>
 
       <q-separator/>
