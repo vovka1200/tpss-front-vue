@@ -5,8 +5,6 @@ import {useUsersStore} from "@/store/access/users";
 import app from "@/main";
 
 const tableRef = ref();
-const rowData = shallowReactive<User>(<User>{});
-const card = ref(false);
 const loading = ref(false);
 const columns = [
   {
@@ -70,7 +68,7 @@ const onClick = (evt: Event, row: User) => {
 
 <template>
   <q-toolbar>
-    <q-btn flat round dense icon="o_add" @click="onClick">
+    <q-btn flat round dense icon="o_add">
       <q-tooltip>Добавить пользователя</q-tooltip>
     </q-btn>
     <q-space/>
