@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
-import {Param, ParamNumber, ParamSelect, ParamString} from "@/models/params";
+import {Param} from "@/models/params";
 
 const props = defineProps<{
-  params: Param[]
+  params: Param[] | undefined
 }>();
 
 function isInteger(val: string) {
@@ -17,7 +17,7 @@ function isFloat(val: string) {
 </script>
 
 <template>
-  <div class="row">
+  <div class="row" v-if="props.params?.length">
     <div v-for="param in props.params" class="q-px-xs col" style="flex: 0 0 25%;">
       <q-input v-if="param.type==='string'"
                v-model="(<ParamString>param).value"
