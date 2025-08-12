@@ -181,7 +181,6 @@ export const useWebsocketStore = defineStore('websocket', () => {
         } else {
             mainStore.onLoad(msg);
             accountStore.onLoad(msg);
-            usersStore.onLoad(msg);
             groupsStore.onLoad(msg);
             clientsStore.onLoad(msg);
             rulesStore.onLoad(msg);

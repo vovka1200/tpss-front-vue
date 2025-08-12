@@ -33,6 +33,12 @@ const save = () => {
       <q-toolbar>
         <q-toolbar-title>Редактирование параметра</q-toolbar-title>
         <q-space/>
+        <q-btn flat dense color="positive" icon="save" @click="save();dialog.hide()">
+          <q-tooltip>Сохранить</q-tooltip>
+        </q-btn>
+        <q-btn flat dense color="accent" icon="cancel" @click="sync();dialog.hide()">
+          <q-tooltip>Закрыть</q-tooltip>
+        </q-btn>
       </q-toolbar>
 
       <q-separator/>
@@ -54,13 +60,6 @@ const save = () => {
           </div>
         </div>
       </q-card-section>
-
-      <q-separator/>
-
-      <q-card-actions align="right">
-        <q-btn flat color="positive" label="Сохранить" icon="save" @click="save();dialog.hide()"/>
-        <q-btn flat color="accent" label="Отмена" icon="cancel" @click="sync();dialog.hide()"/>
-      </q-card-actions>
 
     </q-card>
   </q-dialog>
