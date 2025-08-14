@@ -10,9 +10,9 @@ import {Notify} from "quasar";
 import {date} from 'quasar'
 import {useCloned} from "@vueuse/core";
 import {storeToRefs} from "pinia";
-import app from "@/main";
 
 const tab = ref('tasks');
+const avatarDialog = ref();
 
 const props = defineProps({
   id: String,
@@ -47,6 +47,16 @@ watch(() => useWebsocketStore().authorized, (ok) => {
   }
 });
 
+const onAvatarClick = () => {
+  avatarDialog.value.show();
+};
+
+const getAvatarUploadURL = (files: any[]) => {
+  return `/file/avatar/${files[0].name}`;
+};
+
+const getAvatarURL = computed(() => `/file/${item.value.avatar}`);
+
 </script>
 
 <template>
@@ -75,6 +85,28 @@ watch(() => useWebsocketStore().authorized, (ok) => {
         <div class="row" style="flex-wrap: nowrap;">
           <q-card-section style="flex-shrink: 0;">
             <q-item-label>Основные данные</q-item-label>
+            <q-item class="justify-center">
+              <q-avatar color="info" size="128px" @click="onAvatarClick">
+                <q-img :src="getAvatarURL"/>
+                <q-dialog ref="avatarDialog">
+                  <q-card>
+                    <q-toolbar>
+                      <q-toolbar-title style="overflow:visible;">Загрузить аватар</q-toolbar-title>
+                      <q-space/>
+                      <q-btn dense flat icon="o_cancel" @click="avatarDialog.hide()"/>
+                    </q-toolbar>
+                    <q-card-section>
+                      <q-uploader
+                          :url="getAvatarUploadURL"
+                          color="teal"
+                          flat
+                          bordered
+                      />
+                    </q-card-section>
+                  </q-card>
+                </q-dialog>
+              </q-avatar>
+            </q-item>
             <q-input v-model="cloned.username" label="Имя(логин)"/>
             <q-input v-model="cloned.password" label="Пароль" type="password"/>
             <q-input v-model="cloned.name" label="ФИО"/>
