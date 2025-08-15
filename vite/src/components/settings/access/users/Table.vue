@@ -5,7 +5,7 @@ import {useUsersStore} from "@/store/access/users";
 import app from "@/main";
 
 const tableRef = ref();
-const loading = ref(false);
+
 const columns = [
   {
     name: 'name',
@@ -42,7 +42,6 @@ const pagination = ref({
 
 const store = useUsersStore();
 const rows = computed(() => {
-  loading.value = false;
   return store.list;
 });
 
@@ -56,7 +55,6 @@ const filter = computed({
 })
 
 const onRequest = () => {
-  loading.value = true;
   store.load();
 };
 
@@ -84,7 +82,7 @@ const onClick = (evt: Event, row: User) => {
       row-key="id"
       :rows="rows"
       :columns="columns"
-      :loading="loading"
+      :loading="store.loading"
       :filter="filter"
       @request="onRequest"
       v-model:pagination="pagination"

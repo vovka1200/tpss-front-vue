@@ -25,10 +25,10 @@ export const useUsersStore = defineStore('users', () => {
                     filter: filter.value,
                 },
                 (msg) => {
+                    loading.value = false;
                     if (msg.result?.users) {
                         list.value = msg.result?.users;
                         item.value = list.value[0];
-                        loading.value = false;
                         return true;
                     }
                     return false;
@@ -66,5 +66,6 @@ export const useUsersStore = defineStore('users', () => {
         load,
         get,
         save,
+        loading,
     };
 });
