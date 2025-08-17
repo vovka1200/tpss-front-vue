@@ -21,15 +21,13 @@ export const useGroupsStore = defineStore('groups', () => {
                 {
                     id: id || null,
                     filter: filter.value,
+                },
+                (msg) => {
+                    list.value = msg.result.groups;
+                    loading.value = false;
+                    return true
                 }
             );
-        }
-    }
-
-    function onLoad(msg: JSONRPCResponse) {
-        if (msg.result?.groups) {
-            list.value = msg.result?.groups;
-            loading.value = false;
         }
     }
 
@@ -37,7 +35,6 @@ export const useGroupsStore = defineStore('groups', () => {
         filter,
         list,
         load,
-        onLoad,
         get,
     };
 });
