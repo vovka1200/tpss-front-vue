@@ -9,25 +9,31 @@ export const useClientsStore = defineStore('clients', () => {
     const websocket = useWebsocketStore();
     const filter = ref('');
     const list = ref<Client[]>([]);
+    const loading = ref(false);
 
     function load() {
+        loading.value = true;
         websocket.send(
             "crm.clients.list",
             {
                 filter: filter.value,
-            });
-    }
-
-    function onLoad(msg: JSONRPCResponse) {
-        if (msg.result?.clients) {
-            list.value = msg.result?.clients;
-        }
+            },
+            (msg) => {
+                list.value = msg.result.clients;
+                loading.value = false;
+                return true
+            },
+            (msg) => {
+                loading.value = false;
+                return false
+            }
+        );
     }
 
     return {
         filter,
         list,
         load,
-        onLoad,
+        loading,
     };
 });

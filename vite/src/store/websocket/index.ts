@@ -6,7 +6,6 @@ import {ref} from "vue";
 import moment from "moment/moment";
 import {useMainStore} from "@/store";
 import {useAccountStore} from "@/store/access/account";
-import {useClientsStore} from "@/store/crm/clients";
 import {useRulesStore} from "@/store/access/rules";
 import {useParamsStore} from "@/store/settings/params";
 
@@ -16,7 +15,6 @@ type errorHandler = (msg: JSONRPCErrorResponse) => boolean;
 export const useWebsocketStore = defineStore('websocket', () => {
     const mainStore = useMainStore();
     const accountStore = useAccountStore();
-    const clientsStore = useClientsStore();
     const rulesStore = useRulesStore();
     const paramsStore = useParamsStore();
     const isConnected = ref(false);
@@ -159,7 +157,6 @@ export const useWebsocketStore = defineStore('websocket', () => {
                 }
             }
             mainStore.onLoad(msg);
-            clientsStore.onLoad(msg);
             rulesStore.onLoad(msg);
             paramsStore.onLoad(msg);
         }

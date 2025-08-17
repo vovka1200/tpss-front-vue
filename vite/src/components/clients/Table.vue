@@ -6,7 +6,6 @@ import {useClientsStore} from "@/store/crm/clients";
 import app from "@/main";
 
 const tableRef = ref();
-const loading = ref(false);
 const columns = [
   {
     name: 'name',
@@ -26,10 +25,8 @@ const pagination = ref({
 });
 
 const store = useClientsStore();
-const rows = computed(() => {
-  loading.value = false;
-  return store.list;
-});
+const loading = computed(() => store.loading);
+const rows = computed(() => store.list);
 
 const filter = computed({
   get() {
@@ -39,14 +36,15 @@ const filter = computed({
     store.filter = value;
   }
 });
+
 const onRequest = () => {
-  loading.value = true;
   store.load();
 };
 
 const onRowClick = (event, row: Client) => {
   app.config.globalProperties.$router.push(`/clients/${row.id}`);
 };
+
 </script>
 
 <template>
