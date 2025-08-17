@@ -17,10 +17,19 @@ defineProps({
 
 <template>
   <q-dialog v-bind:model-value="visible" @hide="visible=false">
-    <q-card style="min-width: 50vw; min-height: 50vh;">
+    <q-card style="min-width: 50vw; min-height: 54vh;">
       <q-toolbar>
-        <q-toolbar-title>Группа</q-toolbar-title>
+        <q-toolbar-title>Редактирование группы</q-toolbar-title>
         <q-space/>
+        <q-btn flat dense color="positive" icon="o_save">
+          <q-tooltip>Сохранить</q-tooltip>
+        </q-btn>
+        <q-btn flat dense color="accent" icon="o_refresh">
+          <q-tooltip>Отменить</q-tooltip>
+        </q-btn>
+        <q-btn flat dense color="negative" icon="o_cancel">
+          <q-tooltip>Закрыть</q-tooltip>
+        </q-btn>
       </q-toolbar>
 
       <q-separator/>
@@ -37,13 +46,6 @@ defineProps({
         <q-item-label>Правила доступа</q-item-label>
         <Rules v-bind:group-id="data.id"/>
       </q-card-section>
-
-      <q-separator/>
-
-      <q-card-actions align="right">
-        <q-btn flat color="positive" label="Сохранить" icon="save"/>
-        <q-btn flat color="accent" label="Отмена" icon="cancel" @click="visible=false"/>
-      </q-card-actions>
 
     </q-card>
   </q-dialog>
