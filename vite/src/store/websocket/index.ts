@@ -141,9 +141,11 @@ export const useWebsocketStore = defineStore('websocket', () => {
      */
     function SOCKET_ONMESSAGE(msg: JSONRPCResponse) {
         message.value = msg;
+        // Если для id сообщения зарегистрирован обработчик, то выполняем его
         if (msg.id && onLoadCallBacks.has(<number>(msg.id))) {
             const exit = onLoadCallBacks.get(<number>(msg.id))?.call(msg, msg);
             onLoadCallBacks.delete(<number>msg.id)
+            // Если обработчик вернул true, прекращаем дальнейшую обработку
             if (exit) {
                 return;
             }
