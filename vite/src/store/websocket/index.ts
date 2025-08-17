@@ -109,7 +109,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
      * @param {resultHandler} onLoad
      * @returns number | undefined
      */
-    function send(method: string, params?: any, onLoad?: resultHandler): number | undefined {
+    function send(method: string, params?: any, onLoad?: resultHandler, onError?: errorHandler): number | undefined {
         if (isConnected.value) {
             const id = requestId.value++;
             const req: JSONRPCRequest = {
@@ -118,8 +118,13 @@ export const useWebsocketStore = defineStore('websocket', () => {
                 method: method,
                 params: params || {},
             };
+            // Регистрация обработчика результата
             if (typeof onLoad === 'function') {
                 resultHandlers.set(id, onLoad);
+            }
+            // Регистрация обработчика ошибки
+            if (typeof onError === 'function') {
+                errorHandlers.set(id, onError);
             }
             app.config.globalProperties.$socket.sendObj(req);
             return id;
