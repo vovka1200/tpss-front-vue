@@ -1,11 +1,15 @@
 <script setup lang="ts">
 
-import {computed, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import {Rule} from "@/models/access/maxrix";
 import {useRulesStore} from "@/store/access/rules";
+import {storeToRefs} from "pinia";
 
 const tableRef = ref();
-const loading = ref(false);
+
+const methods = ref([
+  'read', 'write'
+]);
 
 const props = defineProps({
   groupId: String,
@@ -13,17 +17,17 @@ const props = defineProps({
 
 const columns = [
   {
-    name: 'object',
+    name: 'description',
     required: true,
     label: 'Объект',
     align: 'left',
-    field: (row: Rule) => row.object,
+    field: (row: Rule) => row.description,
     sortable: true
   },
   {
     name: 'method',
     required: true,
-    label: 'Метод',
+    label: 'Доступ',
     align: 'left',
     field: (row: Rule) => row.access.join(','),
     sortable: true
@@ -31,15 +35,12 @@ const columns = [
 ];
 
 const store = useRulesStore();
-const rows = computed(() => {
-  loading.value = false;
-  return store.list;
-});
+const {list, loading} = storeToRefs(store);
 
 onMounted(() => {
-  loading.value = true;
   store.load(props.groupId);
 });
+
 </script>
 
 <template>
@@ -47,10 +48,39 @@ onMounted(() => {
       dense flat
       ref="tableRef"
       row-key="id"
-      :rows="rows"
+      :rows="list"
       :columns="columns"
       :loading="loading"
-  />
+  >
+    <template #body-cell-method="props">
+      <q-td :props="props">
+        <div class="row justify-around" style="width:80px;">
+          <q-btn
+              :color="props.row['access'].includes('read') ? 'positive' : 'negative'"
+              icon="file_open"
+              round
+              dense
+              unelevated
+              push
+              @click="props.row['access'].includes('read') ? props.row['access'].splice(props.row['access'].indexOf('read'),1) : props.row['access'].push('read')"
+          >
+            <q-tooltip>Чтение</q-tooltip>
+          </q-btn>
+          <q-btn
+              :color="props.row['access'].includes('write') ? 'warning' : 'negative'"
+              icon="save"
+              round
+              dense
+              unelevated
+              push
+              @click="props.row['access'].includes('write') ? props.row['access'].splice(props.row['access'].indexOf('write'),1) : props.row['access'].push('write')"
+          >
+            <q-tooltip>Чтение</q-tooltip>
+          </q-btn>
+        </div>
+      </q-td>
+    </template>
+  </q-table>
 </template>
 
 <style scoped>

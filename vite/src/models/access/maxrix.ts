@@ -1,8 +1,9 @@
 export type AccessMatrix = Rule[];
 
 export interface Rule {
-    object: String
+    object: string
     access: Method[]
+    description: string
 }
 
 export enum Method {
