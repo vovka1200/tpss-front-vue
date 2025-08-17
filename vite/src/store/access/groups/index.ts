@@ -1,7 +1,6 @@
 import {defineStore} from "pinia";
 import {computed, ref} from "vue";
 import {Group} from "@/models/access/groups";
-import {JSONRPCResponse} from "json-rpc-2.0";
 import {useWebsocketStore} from "@/store/websocket";
 
 
@@ -26,7 +25,7 @@ export const useGroupsStore = defineStore('groups', () => {
                     loading.value = false;
                     return true
                 },
-                (msg) => {
+                () => {
                     loading.value = false;
                     return false
                 }
