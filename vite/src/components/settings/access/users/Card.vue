@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import BaseCard from "@/pages/BaseCard.vue";
-import {computed, ref, shallowRef, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import {useUsersStore} from "@/store/access/users";
 import ParamsSection from '@/components/params/CardSection.vue';
 import {useWebsocketStore} from "@/store/websocket";
@@ -52,10 +52,24 @@ const onAvatarClick = () => {
 };
 
 const getAvatarUploadURL = (files: any[]) => {
-  return `/file/avatar/${files[0].name}`;
+  return `/api/v1/users/${store.item.id}/avatar`;
 };
 
 const getAvatarURL = computed(() => `/file/${item.value.avatar}`);
+const avatar = computed(() => item.value.avatar);
+
+/**
+ *
+ * @param info
+ */
+const onAvatarUploadError = (info: { xhr: { responseText: string } }) => {
+  Notify.create({
+    icon: 'error',
+    color: 'negative',
+    message: 'Ошибка загрузки аватара',
+    caption: info.xhr.responseText,
+  });
+};
 
 </script>
 
@@ -87,7 +101,7 @@ const getAvatarURL = computed(() => `/file/${item.value.avatar}`);
             <q-item-label>Основные данные</q-item-label>
             <q-item class="justify-center">
               <q-avatar color="info" size="128px" @click="onAvatarClick">
-                <q-img :src="getAvatarURL"/>
+                <q-img :src="getAvatarURL" v-if="avatar"/>
                 <q-dialog ref="avatarDialog">
                   <q-card>
                     <q-toolbar>
@@ -101,6 +115,7 @@ const getAvatarURL = computed(() => `/file/${item.value.avatar}`);
                           color="teal"
                           flat
                           bordered
+                          @failed="onAvatarUploadError"
                       />
                     </q-card-section>
                   </q-card>
