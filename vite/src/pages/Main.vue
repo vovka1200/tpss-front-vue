@@ -9,7 +9,6 @@ import MainMenu from "@/components/MainMenu.vue";
 import Navigator from "@/components/Navigator.vue";
 
 const miniMenu = ref(false);
-const mainStore = useMainStore();
 const accountStore = useAccountStore();
 
 </script>

@@ -1,7 +1,6 @@
 import {defineStore} from "pinia";
 import {computed, ref} from "vue";
 import {User} from "@/models/access/users";
-import {JSONRPCResponse} from "json-rpc-2.0";
 import {useWebsocketStore} from "@/store/websocket";
 import {Notify} from "quasar";
 

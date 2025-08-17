@@ -2,37 +2,37 @@
 
 import {useAccountStore} from "@/store/access/account";
 import {computed, ref} from "vue";
-import {useMainStore} from "@/store";
 
 const open = ref(false);
-const mainStore = useMainStore();
-const accountStore = useAccountStore();
+const store = useAccountStore();
 
 const username = computed(() => {
-  return accountStore.username;
+  return store.account.username;
 })
 
 const name = computed({
   get() {
-    return accountStore.name;
+    return store.account.name;
   },
   set(value) {
-    accountStore.name = value;
+    store.account.name = value;
   }
 })
 
 const password = computed({
   get() {
-    return accountStore.password;
+    return store.account.password;
   },
   set(value) {
-    accountStore.password = value;
+    store.account.password = value;
   }
 })
 
+const avatar = computed(() => store.account.avatar);
+
 const logout = () => {
   open.value = false;
-  accountStore.logout();
+  store.logout();
 };
 
 const pwdVisible = ref(false);
@@ -40,6 +40,8 @@ const passwordRetype = ref('');
 const retypePassword = ref(false);
 
 const pwdIcon = computed(() => pwdVisible.value ? 'visibility_off' : 'visibility');
+
+const getAvatarURL = computed(() => `/file/${store.account.avatar}`);
 
 </script>
 
@@ -85,7 +87,9 @@ const pwdIcon = computed(() => pwdVisible.value ? 'visibility_off' : 'visibility
       <q-separator vertical inset class="q-mx-lg"/>
       <q-card dense flat class="text-center">
         <q-card-section>
-          <q-avatar icon="flutter_dash" color="info" size="128px"/>
+          <q-avatar color="info" size="128px">
+            <q-img :src="getAvatarURL" v-if="avatar"/>
+          </q-avatar>
         </q-card-section>
         <q-card-section>
           <q-input v-model="name" label="ФИО"/>

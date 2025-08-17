@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref, shallowReactive} from "vue";
+import {computed, ref} from "vue";
 import {User} from "@/models/access/users";
 import {useUsersStore} from "@/store/access/users";
 import app from "@/main";

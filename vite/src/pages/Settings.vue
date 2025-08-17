@@ -7,10 +7,8 @@ import {useGroupsStore} from "@/store/access/groups";
 
 const tab = ref('users');
 
-const mainStore = useMainStore();
 const accountStore = useAccountStore();
 const usersStore = useUsersStore();
-const groupsStore = useGroupsStore();
 
 onMounted(() => {
   if (accountStore.allowed('settings')) {

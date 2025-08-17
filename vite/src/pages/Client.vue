@@ -1,14 +1,7 @@
 <script setup lang="ts">
 
-import {useRoute} from "vue-router";
 import {ref} from "vue";
-import {useMainStore} from "@/store";
 import BaseCard from "@/pages/BaseCard.vue";
-
-const route = useRoute();
-const id = ref(route.params.id);
-
-const mainStore = useMainStore();
 
 const options = ref([
   'Активен', 'Удалён'

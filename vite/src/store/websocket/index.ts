@@ -17,7 +17,6 @@ type onMessage = (msg: JSONRPCResponse) => boolean;
 export const useWebsocketStore = defineStore('websocket', () => {
     const mainStore = useMainStore();
     const accountStore = useAccountStore();
-    const usersStore = useUsersStore();
     const groupsStore = useGroupsStore();
     const clientsStore = useClientsStore();
     const rulesStore = useRulesStore();
@@ -180,7 +179,6 @@ export const useWebsocketStore = defineStore('websocket', () => {
             }
         } else {
             mainStore.onLoad(msg);
-            accountStore.onLoad(msg);
             groupsStore.onLoad(msg);
             clientsStore.onLoad(msg);
             rulesStore.onLoad(msg);

@@ -12,19 +12,19 @@ const shaking = computed(() => mainStore.authShake ? 'shake' : '');
 
 const username = computed({
   get() {
-    return accountStore.username;
+    return accountStore.account.username;
   },
   set(value) {
-    accountStore.username = value;
+    accountStore.account.username = value;
   }
 })
 
 const password = computed({
   get() {
-    return accountStore.password;
+    return accountStore.account?.password;
   },
   set(value) {
-    accountStore.password = value;
+    accountStore.account.password = value;
   }
 })
 

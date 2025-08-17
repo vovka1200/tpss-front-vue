@@ -5,23 +5,21 @@ import {JSONRPCResponse} from "json-rpc-2.0";
 import {AccessMatrix, Method} from "@/models/access/maxrix";
 import {useMainStore} from "@/store";
 import {Notify} from "quasar";
+import {User} from "@/models/access/users";
 
 export const useAccountStore = defineStore('account', () => {
     const websocket = useWebsocketStore();
     const mainStore = useMainStore();
-    const id = ref('');
-    const username = ref('');
-    const password = ref('');
-    const name = ref('');
+    const account = ref<User>(<User>{});
     const accessMatrix = ref<AccessMatrix>([]);
 
     function login(): number | undefined {
-        if (username.value && password.value) {
+        if (account.value.username && account.value.password) {
             return websocket.send(
                 "access.users.user.login",
                 {
-                    username: username.value,
-                    password: password.value,
+                    username: account.value.username,
+                    password: account.value.password,
                 },
                 onLogin,
             );
@@ -42,18 +40,15 @@ export const useAccountStore = defineStore('account', () => {
 
     function onLogin(msg: JSONRPCResponse): boolean {
         if (msg.result?.account) {
-            const account = msg.result?.account;
-            id.value = account.id;
-            username.value = account.username;
-            name.value = account.name;
+            account.value = msg.result?.account;
             websocket.setToken(msg.result?.token);
             mainStore.hideAuthorizationDialog();
-            websocket.send('access.matrix');
+            accessMatrix.value = msg.result?.access_matrix;
             Notify.create({
                 icon: 'how_to_reg',
                 color: 'positive',
                 message: `Успешная аутентификация!`,
-                caption: account.name,
+                caption: account.value.name,
             });
         } else if (msg.error) {
             if (msg.error.code === 401) {
@@ -70,16 +65,8 @@ export const useAccountStore = defineStore('account', () => {
         return true;
     }
 
-    function onLoad(msg: JSONRPCResponse) {
-        if (msg.result?.matrix) {
-            accessMatrix.value = msg.result?.matrix;
-            websocket.authorized = true;
-        }
-    }
-
     function logout() {
-        username.value = '';
-        password.value = '';
+        account.value = <User>{};
         accessMatrix.value = [];
         websocket.authorized = false;
         websocket.resetToken();
@@ -96,14 +83,10 @@ export const useAccountStore = defineStore('account', () => {
     });
 
     return {
-        id,
-        username,
-        password,
-        name,
+        account,
         login,
         logout,
         allowed,
         loginByToken,
-        onLoad,
     };
 });
