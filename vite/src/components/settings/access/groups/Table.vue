@@ -8,7 +8,6 @@ import {useGroupsStore} from "@/store/access/groups";
 const tableRef = ref();
 const card = ref(false);
 const rowData = shallowReactive<Group>(<Group>{});
-const loading = ref(false);
 const columns = [
   {
     name: 'name',
@@ -36,10 +35,8 @@ const pagination = ref({
 });
 
 const store = useGroupsStore();
-const rows = computed(() => {
-  loading.value = false;
-  return store.list;
-});
+const rows = computed(() => store.list);
+const loading = computed(() => store.loading);
 
 const filter = computed({
   get() {
@@ -51,7 +48,6 @@ const filter = computed({
 })
 
 const onRequest = () => {
-  loading.value = true;
   store.load();
 };
 
@@ -79,7 +75,7 @@ const onRequest = () => {
       :filter="filter"
       @request="onRequest"
       v-model:pagination="pagination"
-      @row-click="(env,row)=>{rowData=row;card=true}"
+      @row-click="(event,row)=>{rowData=row;card=true}"
   />
   <Card v-model="card" :data="rowData"/>
 </template>
