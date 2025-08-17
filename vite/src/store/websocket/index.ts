@@ -1,12 +1,11 @@
 import {defineStore} from 'pinia';
 import app from '@/main';
 import {Notify, Loading} from "quasar";
-import {JSONRPC, JSONRPCError, JSONRPCErrorResponse, JSONRPCRequest, JSONRPCResponse} from "json-rpc-2.0";
+import {JSONRPC, JSONRPCErrorResponse, JSONRPCRequest, JSONRPCResponse} from "json-rpc-2.0";
 import {ref} from "vue";
 import moment from "moment/moment";
 import {useMainStore} from "@/store";
 import {useAccountStore} from "@/store/access/account";
-import {useRulesStore} from "@/store/access/rules";
 import {useParamsStore} from "@/store/settings/params";
 
 type resultHandler = (msg: JSONRPCResponse) => boolean;
@@ -15,7 +14,6 @@ type errorHandler = (msg: JSONRPCErrorResponse) => boolean;
 export const useWebsocketStore = defineStore('websocket', () => {
     const mainStore = useMainStore();
     const accountStore = useAccountStore();
-    const rulesStore = useRulesStore();
     const paramsStore = useParamsStore();
     const isConnected = ref(false);
     const reconnecting = ref(false);
@@ -157,7 +155,6 @@ export const useWebsocketStore = defineStore('websocket', () => {
                 }
             }
             mainStore.onLoad(msg);
-            rulesStore.onLoad(msg);
             paramsStore.onLoad(msg);
         }
         // Если получена ошибка
