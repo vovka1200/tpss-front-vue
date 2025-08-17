@@ -1,23 +1,21 @@
 import {defineStore} from 'pinia';
 import app from '@/main';
 import {Notify, Loading} from "quasar";
-import {JSONRPC, JSONRPCRequest, JSONRPCResponse} from "json-rpc-2.0";
+import {JSONRPC, JSONRPCError, JSONRPCErrorResponse, JSONRPCRequest, JSONRPCResponse} from "json-rpc-2.0";
 import {ref} from "vue";
 import moment from "moment/moment";
 import {useMainStore} from "@/store";
 import {useAccountStore} from "@/store/access/account";
-import {useUsersStore} from "@/store/access/users";
-import {useGroupsStore} from "@/store/access/groups";
 import {useClientsStore} from "@/store/crm/clients";
 import {useRulesStore} from "@/store/access/rules";
 import {useParamsStore} from "@/store/settings/params";
 
-type onMessage = (msg: JSONRPCResponse) => boolean;
+type resultHandler = (msg: JSONRPCResponse) => boolean;
+type errorHandler = (msg: JSONRPCErrorResponse) => boolean;
 
 export const useWebsocketStore = defineStore('websocket', () => {
     const mainStore = useMainStore();
     const accountStore = useAccountStore();
-    const groupsStore = useGroupsStore();
     const clientsStore = useClientsStore();
     const rulesStore = useRulesStore();
     const paramsStore = useParamsStore();
@@ -29,7 +27,8 @@ export const useWebsocketStore = defineStore('websocket', () => {
     const heartBeatTimer = ref(0);
     const requestId = ref(1);
     const authorized = ref(false);
-    const onLoadCallBacks = new Map<number, onMessage>();
+    const resultHandlers = new Map<number, resultHandler>();
+    const errorHandlers = new Map<number, errorHandler>();
 
     /**
      * Действие на открытие соединения
@@ -107,10 +106,10 @@ export const useWebsocketStore = defineStore('websocket', () => {
      * Вызывает метод с параметрами
      * @param {string} method
      * @param {any} params
-     * @param {onMessage} onLoad
+     * @param {resultHandler} onLoad
      * @returns number | undefined
      */
-    function send(method: string, params?: any, onLoad?: onMessage): number | undefined {
+    function send(method: string, params?: any, onLoad?: resultHandler): number | undefined {
         if (isConnected.value) {
             const id = requestId.value++;
             const req: JSONRPCRequest = {
@@ -120,7 +119,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
                 params: params || {},
             };
             if (typeof onLoad === 'function') {
-                onLoadCallBacks.set(id, onLoad);
+                resultHandlers.set(id, onLoad);
             }
             app.config.globalProperties.$socket.sendObj(req);
             return id;
@@ -141,17 +140,35 @@ export const useWebsocketStore = defineStore('websocket', () => {
      */
     function SOCKET_ONMESSAGE(msg: JSONRPCResponse) {
         message.value = msg;
-        // Если для id сообщения зарегистрирован обработчик, то выполняем его
-        if (msg.id && onLoadCallBacks.has(<number>(msg.id))) {
-            const exit = onLoadCallBacks.get(<number>(msg.id))?.call(msg, msg);
-            onLoadCallBacks.delete(<number>msg.id)
-            // Если обработчик вернул true, прекращаем дальнейшую обработку
-            if (exit) {
-                return;
-            }
-        }
         const error = msg.error;
-        if (error) {
+        const result = msg.result;
+        // Если получен результат
+        if (result) {
+            // Если для id сообщения зарегистрирован обработчик, то выполняем его
+            if (msg.id && resultHandlers.has(<number>(msg.id))) {
+                const exit = resultHandlers.get(<number>(msg.id))?.call(msg, msg);
+                resultHandlers.delete(<number>msg.id)
+                // Если обработчик вернул true, прекращаем дальнейшую обработку
+                if (exit) {
+                    return;
+                }
+            }
+            mainStore.onLoad(msg);
+            clientsStore.onLoad(msg);
+            rulesStore.onLoad(msg);
+            paramsStore.onLoad(msg);
+        }
+        // Если получена ошибка
+        else if (error) {
+            // Если для id ошибки зарегистрирован обработчик, то выполняем его
+            if (msg.id && msg.error && errorHandlers.has(<number>(msg.id))) {
+                const exit = errorHandlers.get(<number>(msg.id))?.call(msg, msg);
+                resultHandlers.delete(<number>msg.id)
+                // Если обработчик вернул true, прекращаем дальнейшую обработку
+                if (exit) {
+                    return;
+                }
+            }
             switch (error.code) {
                 case 401:
                     const token = getToken();
@@ -180,11 +197,12 @@ export const useWebsocketStore = defineStore('websocket', () => {
                     });
             }
         } else {
-            mainStore.onLoad(msg);
-            groupsStore.onLoad(msg);
-            clientsStore.onLoad(msg);
-            rulesStore.onLoad(msg);
-            paramsStore.onLoad(msg);
+            Notify.create({
+                icon: 'error',
+                color: 'negative',
+                message: `API: Ошибка связи`,
+                caption: 'Данные отсутствуют',
+            });
         }
     }
 
