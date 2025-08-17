@@ -28,9 +28,10 @@ const columns = [
     name: 'method',
     required: true,
     label: 'Доступ',
-    align: 'left',
+    align: 'center',
     field: (row: Rule) => row.access.join(','),
-    sortable: true
+    sortable: true,
+    style: 'width:100px',
   },
 ];
 
@@ -54,7 +55,7 @@ onMounted(() => {
   >
     <template #body-cell-method="props">
       <q-td :props="props">
-        <div class="row justify-around" style="width:80px;">
+        <div class="row justify-around">
           <q-btn
               :color="props.row['access'].includes('read') ? 'positive' : 'negative'"
               icon="file_open"

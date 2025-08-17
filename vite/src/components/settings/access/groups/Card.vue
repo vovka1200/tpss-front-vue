@@ -17,7 +17,7 @@ defineProps({
 
 <template>
   <q-dialog v-bind:model-value="visible" @hide="visible=false">
-    <q-card>
+    <q-card style="min-width: 50vw; min-height: 50vh;">
       <q-toolbar>
         <q-toolbar-title>Группа</q-toolbar-title>
         <q-space/>
