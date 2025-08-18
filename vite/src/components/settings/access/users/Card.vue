@@ -10,6 +10,7 @@ import {Notify} from "quasar";
 import {date} from 'quasar'
 import {useCloned} from "@vueuse/core";
 import {storeToRefs} from "pinia";
+import {accessDenied, accessReadOnly} from "@/helpers/notify";
 
 const tab = ref('tasks');
 const avatarDialog = ref();
@@ -27,19 +28,11 @@ const writeAllowed = computed(() => useAccountStore().allowed('User', Method.wri
 watch(() => useWebsocketStore().authorized, (ok) => {
   if (ok) {
     if (!readAllowed.value) {
-      Notify.create({
-        icon: 'block',
-        color: 'negative',
-        message: `Доступ ограничен`,
-      });
+      accessDenied();
       return;
     }
     if (!writeAllowed.value) {
-      Notify.create({
-        icon: 'block',
-        color: 'warning',
-        message: `Доступ ограничен`,
-      });
+      accessReadOnly();
     }
     if (store.list.length === 0) {
       store.load(props.id);
@@ -51,7 +44,7 @@ const onAvatarClick = () => {
   avatarDialog.value.show();
 };
 
-const getAvatarUploadURL = (files: any[]) => {
+const getAvatarUploadURL = () => {
   return `/api/v1/users/${store.item.id}/avatar`;
 };
 
