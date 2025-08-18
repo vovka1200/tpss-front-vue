@@ -7,6 +7,7 @@ import GroupsTable from '@/components/settings/access/groups/Table.vue';
 import UsersTable from '@/components/settings/access/users/Table.vue';
 import ParamsTable from '@/components/settings/params/Table.vue';
 import User from '@/pages/User.vue';
+import UserGroup from "@/pages/UserGroup.vue";
 
 export default createRouter({
     history: createWebHistory(),
@@ -58,6 +59,11 @@ export default createRouter({
             name: 'Пользователь',
             path: '/users/:id/profile',
             component: User,
+        },
+        {
+            name: 'Группа',
+            path: '/groups/:id/profile',
+            component: UserGroup,
         },
     ],
 })
