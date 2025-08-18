@@ -31,6 +31,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
      * @param {Event} event
      */
     function SOCKET_ONOPEN(event: Event) {
+        authorized.value = false;
         Loading.hide('websocket');
         app.config.globalProperties.$socket = event.currentTarget;
         isConnected.value = true;

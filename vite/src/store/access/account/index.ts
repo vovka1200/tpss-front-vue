@@ -41,9 +41,10 @@ export const useAccountStore = defineStore('account', () => {
     function onLogin(msg: JSONRPCResponse): boolean {
         if (msg.result?.account) {
             account.value = msg.result?.account;
-            websocket.setToken(msg.result?.token);
-            mainStore.hideAuthorizationDialog();
             accessMatrix.value = msg.result?.access_matrix;
+            websocket.setToken(msg.result?.token);
+            websocket.authorized = true;
+            mainStore.hideAuthorizationDialog();
             Notify.create({
                 icon: 'how_to_reg',
                 color: 'positive',
