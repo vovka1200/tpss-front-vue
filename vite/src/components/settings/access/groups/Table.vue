@@ -2,12 +2,10 @@
 
 import {computed, ref, shallowReactive} from "vue";
 import {Group} from "@/models/access/groups";
-import Card from "@/components/settings/access/groups/Card.vue";
 import {useGroupsStore} from "@/store/access/groups";
+import app from "@/main";
 
 const tableRef = ref();
-const card = ref(false);
-const rowData = shallowReactive<Group>(<Group>{});
 const columns = [
   {
     name: 'name',
@@ -51,6 +49,10 @@ const onRequest = () => {
   store.load();
 };
 
+const onClick = (evt: Event, row: Group) => {
+  app.config.globalProperties.$router.push({name: 'Группа', params: {id: row.id}});
+};
+
 </script>
 
 <template>
@@ -75,9 +77,8 @@ const onRequest = () => {
       :filter="filter"
       @request="onRequest"
       v-model:pagination="pagination"
-      @row-click="(event,row)=>{rowData=row;card=true}"
+      @row-click="onClick"
   />
-  <Card v-model="card" :data="rowData"/>
 </template>
 
 <style scoped>
