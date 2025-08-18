@@ -10,6 +10,7 @@ import {useCloned} from "@vueuse/core";
 import {useWebsocketStore} from "@/store/websocket";
 import {Notify} from "quasar";
 import {useGroupsStore} from "@/store/access/groups";
+import {accessDenied, accessReadOnly} from "@/helpers/notify";
 
 const tab = ref('rules');
 const store = useGroupsStore();
@@ -26,19 +27,11 @@ const writeAllowed = computed(() => useAccountStore().allowed('Group', Method.wr
 watch(() => useWebsocketStore().authorized, (ok) => {
   if (ok) {
     if (!readAllowed.value) {
-      Notify.create({
-        icon: 'block',
-        color: 'negative',
-        message: `Доступ ограничен`,
-      });
+      accessDenied();
       return;
     }
     if (!writeAllowed.value) {
-      Notify.create({
-        icon: 'block',
-        color: 'warning',
-        message: `Доступ ограничен`,
-      });
+      accessReadOnly();
     }
     store.load(props.id);
   }
