@@ -41,8 +41,8 @@ watch(() => useWebsocketStore().authorized, (ok) => {
         message: `Доступ ограничен`,
       });
     }
-    if (useUsersStore().list.length === 0) {
-      useUsersStore().load(props.id);
+    if (store.list.length === 0) {
+      store.load(props.id);
     }
   }
 });
