@@ -7,12 +7,8 @@ import {storeToRefs} from "pinia";
 
 const tableRef = ref();
 
-const methods = ref([
-  'read', 'write'
-]);
-
 const props = defineProps({
-  groupId: String,
+  id: String,
 });
 
 const columns = [
@@ -35,11 +31,19 @@ const columns = [
   },
 ];
 
+const pagination = ref({
+  sortBy: 'desc',
+  descending: false,
+  page: 1,
+  rowsPerPage: 3,
+  rowsNumber: 10
+});
+
 const store = useRulesStore();
 const {list, loading} = storeToRefs(store);
 
 onMounted(() => {
-  store.load(props.groupId);
+  store.load(props.id);
 });
 
 </script>
@@ -52,6 +56,7 @@ onMounted(() => {
       :rows="list"
       :columns="columns"
       :loading="loading"
+      :pagination="pagination"
   >
     <template #body-cell-method="props">
       <q-td :props="props">
