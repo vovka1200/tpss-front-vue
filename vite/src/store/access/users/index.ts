@@ -24,12 +24,13 @@ export const useUsersStore = defineStore('users', () => {
                     filter: filter.value,
                 },
                 (msg) => {
+                    list.value = msg.result?.users;
+                    item.value = list.value[0];
                     loading.value = false;
-                    if (msg.result?.users) {
-                        list.value = msg.result?.users;
-                        item.value = list.value[0];
-                        return true;
-                    }
+                    return true;
+                },
+                () => {
+                    loading.value = false;
                     return false;
                 }
             );
@@ -53,6 +54,9 @@ export const useUsersStore = defineStore('users', () => {
                         return true;
                     }
                     return false;
+                }, () => {
+                    loading.value = false;
+                    return false
                 }
             );
         }
