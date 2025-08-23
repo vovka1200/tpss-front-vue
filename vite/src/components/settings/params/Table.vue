@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {Param} from "@/models/params";
 import {useParamsStore} from "@/store/settings/params";
 import Card from "@/components/settings/params/Card.vue";
 import {storeToRefs} from "pinia";
+import {useWebsocketStore} from "@/store/websocket";
+import {QTableColumn} from 'quasar';
 
 const tableRef = ref();
 const card = ref();
-const columns = [
+const columns = <QTableColumn[]>[
   {
     name: 'name',
     required: true,
@@ -38,12 +40,19 @@ const pagination = ref({
   sortBy: 'desc',
   descending: false,
   page: 1,
-  rowsPerPage: 3,
-  rowsNumber: 10
+  rowsPerPage: 10,
 });
 
 const store = useParamsStore();
 const {list, loading, filter, item} = storeToRefs(store);
+
+watch(() => useWebsocketStore().authorized, (ok) => {
+  if (ok) {
+    if (store.list.length === 0) {
+      store.load();
+    }
+  }
+}, {immediate: true});
 
 const onRequest = () => useParamsStore().load();
 

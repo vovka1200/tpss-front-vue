@@ -2,7 +2,6 @@
 
 import {RouterView} from "vue-router";
 import {ref} from "vue";
-import {useMainStore} from "@/store";
 import UserMenu from "@/components/UserMenu.vue";
 import {useAccountStore} from "@/store/access/account";
 import MainMenu from "@/components/MainMenu.vue";

@@ -11,8 +11,10 @@ import {date} from 'quasar'
 import {useCloned} from "@vueuse/core";
 import {storeToRefs} from "pinia";
 import {accessDenied, accessReadOnly} from "@/helpers/notify";
+import ConfirmSave from "@/components/ConfirmSave.vue";
 
 const tab = ref('tasks');
+const saveConfirm = ref();
 const avatarDialog = ref();
 
 const props = defineProps({
@@ -40,6 +42,10 @@ watch(() => useWebsocketStore().authorized, (ok) => {
   }
 });
 
+const onReload = () => {
+  store.load(props.id);
+};
+
 const onAvatarClick = () => {
   avatarDialog.value.show();
 };
@@ -64,6 +70,10 @@ const onAvatarUploadError = (info: { xhr: { responseText: string } }) => {
   });
 };
 
+const onSaveClick = () => {
+  saveConfirm.value.show();
+};
+
 </script>
 
 <template>
@@ -77,10 +87,10 @@ const onAvatarUploadError = (info: { xhr: { responseText: string } }) => {
             <q-tooltip>Добавить параметр</q-tooltip>
           </q-btn>
           <q-separator vertical/>
-          <q-btn flat dense color="positive" icon="o_save" @click="$emit('onSave', cloned)" v-if="writeAllowed">
+          <q-btn flat dense color="positive" icon="o_save" @click="onSaveClick" v-if="writeAllowed">
             <q-tooltip>Сохранить</q-tooltip>
           </q-btn>
-          <q-btn flat dense color="accent" icon="o_refresh" @click="sync();">
+          <q-btn flat dense color="accent" icon="o_refresh" @click="onReload">
             <q-tooltip>Отменить</q-tooltip>
           </q-btn>
           <q-btn flat dense color="negative" icon="o_cancel" @click="$emit('onClose')">
@@ -192,6 +202,7 @@ const onAvatarUploadError = (info: { xhr: { responseText: string } }) => {
     </template>
 
   </BaseCard>
+  <ConfirmSave ref="saveConfirm" @on-confirm="$emit('onSave', cloned)"/>
 </template>
 <style scoped>
 

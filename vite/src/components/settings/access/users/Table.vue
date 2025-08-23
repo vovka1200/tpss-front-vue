@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {User} from "@/models/access/users";
 import {useUsersStore} from "@/store/access/users";
 import app from "@/main";
+import {useWebsocketStore} from "@/store/websocket";
+import {QTableColumn} from 'quasar';
 
 const tableRef = ref();
 
-const columns = [
+const columns = <QTableColumn[]>[
   {
     name: 'name',
     required: true,
@@ -53,6 +55,14 @@ const filter = computed({
     store.filter = value;
   }
 })
+
+watch(() => useWebsocketStore().authorized, (ok) => {
+  if (ok) {
+    if (store.list.length === 0) {
+      store.load();
+    }
+  }
+}, {immediate: true});
 
 const onRequest = () => {
   store.load();

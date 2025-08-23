@@ -1,12 +1,14 @@
 <script setup lang="ts">
 
-import {computed, ref, shallowReactive} from "vue";
+import {computed, ref, watch} from "vue";
 import {Group} from "@/models/access/groups";
 import {useGroupsStore} from "@/store/access/groups";
 import app from "@/main";
+import {useWebsocketStore} from "@/store/websocket";
+import {QTableColumn} from 'quasar';
 
 const tableRef = ref();
-const columns = [
+const columns = <QTableColumn[]>[
   {
     name: 'name',
     required: true,
@@ -28,8 +30,7 @@ const pagination = ref({
   sortBy: 'desc',
   descending: false,
   page: 1,
-  rowsPerPage: 3,
-  rowsNumber: 10
+  rowsPerPage: 10,
 });
 
 const store = useGroupsStore();
@@ -44,6 +45,14 @@ const filter = computed({
     store.filter = value;
   }
 })
+
+watch(() => useWebsocketStore().authorized, (ok) => {
+  if (ok) {
+    if (store.list.length === 0) {
+      store.load();
+    }
+  }
+}, {immediate: true});
 
 const onRequest = () => {
   store.load();

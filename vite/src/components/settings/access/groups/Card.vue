@@ -8,11 +8,11 @@ import {Method} from "@/models/access/maxrix";
 import {storeToRefs} from "pinia";
 import {useCloned} from "@vueuse/core";
 import {useWebsocketStore} from "@/store/websocket";
-import {Notify} from "quasar";
 import {useGroupsStore} from "@/store/access/groups";
 import {accessDenied, accessReadOnly} from "@/helpers/notify";
+import Users from '@/components/settings/access/users/Table.vue'
 
-const tab = ref('rules');
+const tab = ref('members');
 const store = useGroupsStore();
 const {item} = storeToRefs(store);
 const {cloned, sync} = useCloned(item);
@@ -77,10 +77,14 @@ watch(() => useWebsocketStore().authorized, (ok) => {
             align="left"
             narrow-indicator
         >
+          <q-tab name="members" label="Участники"/>
           <q-tab name="rules" label="Правила доступа"/>
         </q-tabs>
         <q-separator/>
         <q-tab-panels v-model="tab" animated>
+          <q-tab-panel name="members">
+            <Users/>
+          </q-tab-panel>
           <q-tab-panel name="rules">
             <Rules v-bind:id="cloned.id"/>
           </q-tab-panel>

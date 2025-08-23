@@ -14,7 +14,7 @@ export const useGroupsStore = defineStore('groups', () => {
 
     const get = computed(() => (id: string) => list.value.find(g => g.id === id));
 
-    function load(id: string | undefined) {
+    function load(id?: string) {
         if (loading.value === false) {
             loading.value = true;
             websocket.send(

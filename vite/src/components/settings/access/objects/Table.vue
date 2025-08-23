@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import {User} from "@/models/access/users";
 import {ref} from "vue";
+import {QTableColumn} from 'quasar';
 
 const filter = ref('');
 const loading = ref(false);
-const columns = [
+const columns = <QTableColumn[]>[
   {
     name: 'name',
     required: true,
@@ -18,8 +19,7 @@ const pagination = ref({
   sortBy: 'desc',
   descending: false,
   page: 1,
-  rowsPerPage: 3,
-  rowsNumber: 10
+  rowsPerPage: 10
 });
 
 const rows = [];

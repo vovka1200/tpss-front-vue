@@ -35,8 +35,7 @@ const pagination = ref({
   sortBy: 'desc',
   descending: false,
   page: 1,
-  rowsPerPage: 3,
-  rowsNumber: 10
+  rowsPerPage: 10
 });
 
 const store = useRulesStore();
